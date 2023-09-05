@@ -1,0 +1,16 @@
+PODS:
+  - PasseiNetworking (0.1.0)
+
+DEPENDENCIES:
+  - PasseiNetworking (from `../`)
+
+EXTERNAL SOURCES:
+  PasseiNetworking:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PasseiNetworking: 71dbd5879770ff4547c72f387aaa6ff1b198096e
+
+PODFILE CHECKSUM: 9f734084a6832593f67302b66056230c5774a612
+
+COCOAPODS: 1.12.1

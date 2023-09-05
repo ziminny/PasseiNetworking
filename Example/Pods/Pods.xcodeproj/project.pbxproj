@@ -1,0 +1,776 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A283F956441BB88B265333288DC6D4B /* Pods-PasseiNetworking_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A1644A4324B20375C9A3B10D9078B50C /* Pods-PasseiNetworking_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		179C223B1365E2B1CA109CC73C44B283 /* PasseiNetworking-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 511D0F487FBAB612676A6643257DDB62 /* PasseiNetworking-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		360E128FEC8E16C4F5EA814BE262234D /* Pods-PasseiNetworking_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FFBA5FA51B0BDF2D77D7DEC6A9BE6D /* Pods-PasseiNetworking_Example-dummy.m */; };
+		4A2BDAE2235F8E35D23746A9687C0D49 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		98C24B1B9C08429276B5423E081EA525 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		9CC16E3DCDB7EF0BEC9B276060615CB5 /* PasseiNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 013A3334B05392751275B96F9F728866 /* PasseiNetworking-dummy.m */; };
+		CAAFDB0C4F9BEF2AD439C8BA5CDEA465 /* Pods-PasseiNetworking_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EC031AED200EA3B77973EB07ECD2CD35 /* Pods-PasseiNetworking_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D1A653A33202BAF19CEFCEE16CAA4C63 /* Pods-PasseiNetworking_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C4CD2D082DD9AE39CAE2587B1AB9049 /* Pods-PasseiNetworking_Tests-dummy.m */; };
+		E864403B259D5013605668BDD629ABA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		F39344194BDD5EA4E25C5FA1A4209CA2 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4FCC3D34550AD78E4DA8205053261F /* ReplaceMe.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		179EC45C88E5E3A8F1E62D41C5B670D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A43C1F0E4E804BC61B16D87129DE352;
+			remoteInfo = "Pods-PasseiNetworking_Example";
+		};
+		F0954591374632A5BB0A226FA69AF25F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE1C9EC8A1DED102933DD953B05F3F95;
+			remoteInfo = PasseiNetworking;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		013A3334B05392751275B96F9F728866 /* PasseiNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PasseiNetworking-dummy.m"; sourceTree = "<group>"; };
+		0A58086333E50D534FCE41CFB4454217 /* PasseiNetworking.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = PasseiNetworking.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1217DCFBE5417ED0F1AD8558F0BBFCEB /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		13533B7C3E092B4EA80302DFAED55EF8 /* Pods-PasseiNetworking_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PasseiNetworking_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		1C1A6B1442514D145AC5349A96BA5E4A /* Pods-PasseiNetworking_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PasseiNetworking_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		295E74B25DA3DB3EA62AB8CC3C5395AE /* PasseiNetworking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PasseiNetworking.release.xcconfig; sourceTree = "<group>"; };
+		2C4CD2D082DD9AE39CAE2587B1AB9049 /* Pods-PasseiNetworking_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PasseiNetworking_Tests-dummy.m"; sourceTree = "<group>"; };
+		3427EC367936B108B8DA42C943259B12 /* PasseiNetworking.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PasseiNetworking.modulemap; sourceTree = "<group>"; };
+		374F61AAE2594C434CBEAE12AF7A5616 /* Pods-PasseiNetworking_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-PasseiNetworking_Example"; path = Pods_PasseiNetworking_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		388A29957D362DA8C6ED27C0A607CCBF /* PasseiNetworking */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PasseiNetworking; path = PasseiNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		41918CC46D9C1F2E14EDB5A51362323A /* Pods-PasseiNetworking_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-PasseiNetworking_Tests"; path = Pods_PasseiNetworking_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43DB8A6FB30A3B92A23574F8495E887A /* PasseiNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PasseiNetworking.debug.xcconfig; sourceTree = "<group>"; };
+		511D0F487FBAB612676A6643257DDB62 /* PasseiNetworking-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PasseiNetworking-umbrella.h"; sourceTree = "<group>"; };
+		5731D0DD7B5429F7C5D1E47680895F70 /* Pods-PasseiNetworking_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PasseiNetworking_Tests.modulemap"; sourceTree = "<group>"; };
+		6C351C422B4E82567E18AF953D36A132 /* Pods-PasseiNetworking_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PasseiNetworking_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		6D94350C60B8FE3ACC6212B2A58669E4 /* Pods-PasseiNetworking_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PasseiNetworking_Example.modulemap"; sourceTree = "<group>"; };
+		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		77686B5211C960CE6293D08D98A2D589 /* PasseiNetworking-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "PasseiNetworking-Info.plist"; sourceTree = "<group>"; };
+		833D53ED5907352AE54FEFFA0410B74A /* Pods-PasseiNetworking_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PasseiNetworking_Example-Info.plist"; sourceTree = "<group>"; };
+		8D295BD0CC82082A261D407B56BEE1C3 /* PasseiNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PasseiNetworking-prefix.pch"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A1644A4324B20375C9A3B10D9078B50C /* Pods-PasseiNetworking_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PasseiNetworking_Tests-umbrella.h"; sourceTree = "<group>"; };
+		A5FFBA5FA51B0BDF2D77D7DEC6A9BE6D /* Pods-PasseiNetworking_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PasseiNetworking_Example-dummy.m"; sourceTree = "<group>"; };
+		A72ACEF510048DEAA676731915487933 /* Pods-PasseiNetworking_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PasseiNetworking_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		AD5F3EBDA2FA3E6E37A40C235714EA2E /* Pods-PasseiNetworking_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PasseiNetworking_Example.release.xcconfig"; sourceTree = "<group>"; };
+		B9122BDEBAFEF4AD858E28BE8C3849BE /* Pods-PasseiNetworking_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PasseiNetworking_Tests-Info.plist"; sourceTree = "<group>"; };
+		BE7934B6FAA1C06CB04D543BD220BAB7 /* Pods-PasseiNetworking_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PasseiNetworking_Example-frameworks.sh"; sourceTree = "<group>"; };
+		C448CF4985FCFBDC522C56347B8CB49C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		C50E3B797FBC36C476017B971749BE69 /* Pods-PasseiNetworking_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PasseiNetworking_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C95F7CEA0E9B7C7135CAE8C4854C166B /* Pods-PasseiNetworking_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PasseiNetworking_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		E53053D73EE87D331A2AA278FE45D626 /* Pods-PasseiNetworking_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PasseiNetworking_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		EC031AED200EA3B77973EB07ECD2CD35 /* Pods-PasseiNetworking_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PasseiNetworking_Example-umbrella.h"; sourceTree = "<group>"; };
+		FF4FCC3D34550AD78E4DA8205053261F /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = PasseiNetworking/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		056BFF00AD1820D7BA1FBEFE377C7187 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98C24B1B9C08429276B5423E081EA525 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		600DEFE0D80FD9E2B6392E22AB390A82 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A2BDAE2235F8E35D23746A9687C0D49 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FA237AD08098BA5A3DFF800D9F91BD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E864403B259D5013605668BDD629ABA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0154D3EDBBD9433A3543169C69E6F272 /* Pods-PasseiNetworking_Example */ = {
+			isa = PBXGroup;
+			children = (
+				6D94350C60B8FE3ACC6212B2A58669E4 /* Pods-PasseiNetworking_Example.modulemap */,
+				A72ACEF510048DEAA676731915487933 /* Pods-PasseiNetworking_Example-acknowledgements.markdown */,
+				13533B7C3E092B4EA80302DFAED55EF8 /* Pods-PasseiNetworking_Example-acknowledgements.plist */,
+				A5FFBA5FA51B0BDF2D77D7DEC6A9BE6D /* Pods-PasseiNetworking_Example-dummy.m */,
+				BE7934B6FAA1C06CB04D543BD220BAB7 /* Pods-PasseiNetworking_Example-frameworks.sh */,
+				833D53ED5907352AE54FEFFA0410B74A /* Pods-PasseiNetworking_Example-Info.plist */,
+				EC031AED200EA3B77973EB07ECD2CD35 /* Pods-PasseiNetworking_Example-umbrella.h */,
+				E53053D73EE87D331A2AA278FE45D626 /* Pods-PasseiNetworking_Example.debug.xcconfig */,
+				AD5F3EBDA2FA3E6E37A40C235714EA2E /* Pods-PasseiNetworking_Example.release.xcconfig */,
+			);
+			name = "Pods-PasseiNetworking_Example";
+			path = "Target Support Files/Pods-PasseiNetworking_Example";
+			sourceTree = "<group>";
+		};
+		125586FEFA6ACD27CEC12D6E89F6DB65 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				388A29957D362DA8C6ED27C0A607CCBF /* PasseiNetworking */,
+				374F61AAE2594C434CBEAE12AF7A5616 /* Pods-PasseiNetworking_Example */,
+				41918CC46D9C1F2E14EDB5A51362323A /* Pods-PasseiNetworking_Tests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C152065ACFD1119A2D77547E3480ABD /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				1217DCFBE5417ED0F1AD8558F0BBFCEB /* LICENSE */,
+				0A58086333E50D534FCE41CFB4454217 /* PasseiNetworking.podspec */,
+				C448CF4985FCFBDC522C56347B8CB49C /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		44B9D856D74079EF60786548C26E361B /* PasseiNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				FF4FCC3D34550AD78E4DA8205053261F /* ReplaceMe.swift */,
+				1C152065ACFD1119A2D77547E3480ABD /* Pod */,
+				E25F72B972EEC4CB9DCFDF9405B59B98 /* Support Files */,
+			);
+			name = PasseiNetworking;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		C8E4CCD40271CE2933A2DAA39FBDCB8A /* Pods-PasseiNetworking_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				5731D0DD7B5429F7C5D1E47680895F70 /* Pods-PasseiNetworking_Tests.modulemap */,
+				C50E3B797FBC36C476017B971749BE69 /* Pods-PasseiNetworking_Tests-acknowledgements.markdown */,
+				C95F7CEA0E9B7C7135CAE8C4854C166B /* Pods-PasseiNetworking_Tests-acknowledgements.plist */,
+				2C4CD2D082DD9AE39CAE2587B1AB9049 /* Pods-PasseiNetworking_Tests-dummy.m */,
+				B9122BDEBAFEF4AD858E28BE8C3849BE /* Pods-PasseiNetworking_Tests-Info.plist */,
+				A1644A4324B20375C9A3B10D9078B50C /* Pods-PasseiNetworking_Tests-umbrella.h */,
+				1C1A6B1442514D145AC5349A96BA5E4A /* Pods-PasseiNetworking_Tests.debug.xcconfig */,
+				6C351C422B4E82567E18AF953D36A132 /* Pods-PasseiNetworking_Tests.release.xcconfig */,
+			);
+			name = "Pods-PasseiNetworking_Tests";
+			path = "Target Support Files/Pods-PasseiNetworking_Tests";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				F820BACC024943BC287DAE63204F9DDA /* Development Pods */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				125586FEFA6ACD27CEC12D6E89F6DB65 /* Products */,
+				FDAD3E867C5323311B653174CFB58B37 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				578452D2E740E91742655AC8F1636D1F /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E25F72B972EEC4CB9DCFDF9405B59B98 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				3427EC367936B108B8DA42C943259B12 /* PasseiNetworking.modulemap */,
+				013A3334B05392751275B96F9F728866 /* PasseiNetworking-dummy.m */,
+				77686B5211C960CE6293D08D98A2D589 /* PasseiNetworking-Info.plist */,
+				8D295BD0CC82082A261D407B56BEE1C3 /* PasseiNetworking-prefix.pch */,
+				511D0F487FBAB612676A6643257DDB62 /* PasseiNetworking-umbrella.h */,
+				43DB8A6FB30A3B92A23574F8495E887A /* PasseiNetworking.debug.xcconfig */,
+				295E74B25DA3DB3EA62AB8CC3C5395AE /* PasseiNetworking.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/PasseiNetworking";
+			sourceTree = "<group>";
+		};
+		F820BACC024943BC287DAE63204F9DDA /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				44B9D856D74079EF60786548C26E361B /* PasseiNetworking */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		FDAD3E867C5323311B653174CFB58B37 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0154D3EDBBD9433A3543169C69E6F272 /* Pods-PasseiNetworking_Example */,
+				C8E4CCD40271CE2933A2DAA39FBDCB8A /* Pods-PasseiNetworking_Tests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C212516683ABD4894B04BB355A166D26 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A283F956441BB88B265333288DC6D4B /* Pods-PasseiNetworking_Tests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C4C2608F4E633374FE9CC906CF5510EA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAAFDB0C4F9BEF2AD439C8BA5CDEA465 /* Pods-PasseiNetworking_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F38A416648D032A52A77475DC5BA30C2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				179C223B1365E2B1CA109CC73C44B283 /* PasseiNetworking-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		57004578B9075D4391D44F8A60E9F428 /* Pods-PasseiNetworking_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABFE57B263D7C1A21A8826E71AF69E1C /* Build configuration list for PBXNativeTarget "Pods-PasseiNetworking_Tests" */;
+			buildPhases = (
+				C212516683ABD4894B04BB355A166D26 /* Headers */,
+				31E9E5A44A1FB3F24FB1999FD4AFD54D /* Sources */,
+				600DEFE0D80FD9E2B6392E22AB390A82 /* Frameworks */,
+				4694E58C15A98F6FEEA74AB685CDF0D0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7D150C06EF70EA9A82473F83FD85FA8D /* PBXTargetDependency */,
+			);
+			name = "Pods-PasseiNetworking_Tests";
+			productName = Pods_PasseiNetworking_Tests;
+			productReference = 41918CC46D9C1F2E14EDB5A51362323A /* Pods-PasseiNetworking_Tests */;
+			productType = "com.apple.product-type.framework";
+		};
+		9A43C1F0E4E804BC61B16D87129DE352 /* Pods-PasseiNetworking_Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32434ADA4E5D594FC75FB74CA1222BA /* Build configuration list for PBXNativeTarget "Pods-PasseiNetworking_Example" */;
+			buildPhases = (
+				C4C2608F4E633374FE9CC906CF5510EA /* Headers */,
+				3EA62A6E48AAB317DF902B50A0E13C6B /* Sources */,
+				056BFF00AD1820D7BA1FBEFE377C7187 /* Frameworks */,
+				68A8B8083307B443AD358E738E3F454D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4F0F759C9428DCFF805C3450EF8CD460 /* PBXTargetDependency */,
+			);
+			name = "Pods-PasseiNetworking_Example";
+			productName = Pods_PasseiNetworking_Example;
+			productReference = 374F61AAE2594C434CBEAE12AF7A5616 /* Pods-PasseiNetworking_Example */;
+			productType = "com.apple.product-type.framework";
+		};
+		BE1C9EC8A1DED102933DD953B05F3F95 /* PasseiNetworking */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C77DE51C46E207BA9435046837E6C2D7 /* Build configuration list for PBXNativeTarget "PasseiNetworking" */;
+			buildPhases = (
+				F38A416648D032A52A77475DC5BA30C2 /* Headers */,
+				0037A969300EB30ECA325483F9AD74FC /* Sources */,
+				8FA237AD08098BA5A3DFF800D9F91BD7 /* Frameworks */,
+				CDF8C419D1FF71515A4445347C92B8FF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PasseiNetworking;
+			productName = PasseiNetworking;
+			productReference = 388A29957D362DA8C6ED27C0A607CCBF /* PasseiNetworking */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 125586FEFA6ACD27CEC12D6E89F6DB65 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE1C9EC8A1DED102933DD953B05F3F95 /* PasseiNetworking */,
+				9A43C1F0E4E804BC61B16D87129DE352 /* Pods-PasseiNetworking_Example */,
+				57004578B9075D4391D44F8A60E9F428 /* Pods-PasseiNetworking_Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4694E58C15A98F6FEEA74AB685CDF0D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68A8B8083307B443AD358E738E3F454D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDF8C419D1FF71515A4445347C92B8FF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0037A969300EB30ECA325483F9AD74FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CC16E3DCDB7EF0BEC9B276060615CB5 /* PasseiNetworking-dummy.m in Sources */,
+				F39344194BDD5EA4E25C5FA1A4209CA2 /* ReplaceMe.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31E9E5A44A1FB3F24FB1999FD4AFD54D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1A653A33202BAF19CEFCEE16CAA4C63 /* Pods-PasseiNetworking_Tests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3EA62A6E48AAB317DF902B50A0E13C6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				360E128FEC8E16C4F5EA814BE262234D /* Pods-PasseiNetworking_Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4F0F759C9428DCFF805C3450EF8CD460 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PasseiNetworking;
+			target = BE1C9EC8A1DED102933DD953B05F3F95 /* PasseiNetworking */;
+			targetProxy = F0954591374632A5BB0A226FA69AF25F /* PBXContainerItemProxy */;
+		};
+		7D150C06EF70EA9A82473F83FD85FA8D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-PasseiNetworking_Example";
+			target = 9A43C1F0E4E804BC61B16D87129DE352 /* Pods-PasseiNetworking_Example */;
+			targetProxy = 179EC45C88E5E3A8F1E62D41C5B670D9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		277BB983108B6555C78034C7661F6B75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 295E74B25DA3DB3EA62AB8CC3C5395AE /* PasseiNetworking.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PasseiNetworking/PasseiNetworking-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PasseiNetworking/PasseiNetworking-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PasseiNetworking/PasseiNetworking.modulemap";
+				PRODUCT_MODULE_NAME = PasseiNetworking;
+				PRODUCT_NAME = PasseiNetworking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		63ECCEA1F09FBB7AD9C3777FC1463D51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C1A6B1442514D145AC5349A96BA5E4A /* Pods-PasseiNetworking_Tests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PasseiNetworking_Tests/Pods-PasseiNetworking_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PasseiNetworking_Tests/Pods-PasseiNetworking_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		7EE7A78859F657F6BEFC651185B43192 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		A108500C1825E6D8E79446721D03BFDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C351C422B4E82567E18AF953D36A132 /* Pods-PasseiNetworking_Tests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PasseiNetworking_Tests/Pods-PasseiNetworking_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PasseiNetworking_Tests/Pods-PasseiNetworking_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B41C7AAF203C0DA8E62F5CFC852D3767 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AD5F3EBDA2FA3E6E37A40C235714EA2E /* Pods-PasseiNetworking_Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PasseiNetworking_Example/Pods-PasseiNetworking_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PasseiNetworking_Example/Pods-PasseiNetworking_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D299434AB35E7FD6F7921C8EF24742FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		EDDA3C57F64EF5276B30AC2729C93DF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E53053D73EE87D331A2AA278FE45D626 /* Pods-PasseiNetworking_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PasseiNetworking_Example/Pods-PasseiNetworking_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PasseiNetworking_Example/Pods-PasseiNetworking_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		FE9208E49DDA84C1C5F470FA8DCC14A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43DB8A6FB30A3B92A23574F8495E887A /* PasseiNetworking.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PasseiNetworking/PasseiNetworking-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PasseiNetworking/PasseiNetworking-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PasseiNetworking/PasseiNetworking.modulemap";
+				PRODUCT_MODULE_NAME = PasseiNetworking;
+				PRODUCT_NAME = PasseiNetworking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D299434AB35E7FD6F7921C8EF24742FF /* Debug */,
+				7EE7A78859F657F6BEFC651185B43192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ABFE57B263D7C1A21A8826E71AF69E1C /* Build configuration list for PBXNativeTarget "Pods-PasseiNetworking_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63ECCEA1F09FBB7AD9C3777FC1463D51 /* Debug */,
+				A108500C1825E6D8E79446721D03BFDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C77DE51C46E207BA9435046837E6C2D7 /* Build configuration list for PBXNativeTarget "PasseiNetworking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE9208E49DDA84C1C5F470FA8DCC14A5 /* Debug */,
+				277BB983108B6555C78034C7661F6B75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D32434ADA4E5D594FC75FB74CA1222BA /* Build configuration list for PBXNativeTarget "Pods-PasseiNetworking_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDDA3C57F64EF5276B30AC2729C93DF3 /* Debug */,
+				B41C7AAF203C0DA8E62F5CFC852D3767 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}
