@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LogManager
+import PasseiLogManager
 
 /// Responsável por fazer as requisições na API
 @available(iOS 13.0.0, *)

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LogManager
+import PasseiLogManager
 
 /// Essa classe é exposta para o cliente
 @available(iOS 13.0.0, *)
