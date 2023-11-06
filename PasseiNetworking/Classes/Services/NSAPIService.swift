@@ -8,6 +8,10 @@
 import Foundation
 import PasseiLogManager
 
+public protocol NSAPIServiceDelegate {
+    func networkUnavailableAction()
+}
+
 /// Essa classe é exposta para o cliente
 @available(iOS 13.0.0, *)
 public class NSAPIService {
@@ -15,8 +19,11 @@ public class NSAPIService {
     private var nsParameters:NSParameters?
     private var apiRequester:NSAPIRequester =  NSAPIRequester()
     
+    /// Ao criar no módulo solicitado um NSAPIService, caso queira verificar a disponibilidade da internet, entregar a responsabilidade desse delegate
+    public var delegate: NSAPIServiceDelegate?
+    
     public init() {
-       
+        NSAPIConfiguration.shared.delegate = self
     }
     
     @discardableResult
@@ -110,6 +117,12 @@ public class NSAPIService {
             }
           
         }
+    }
+}
+
+extension NSAPIService: NSAPIConfigurationSessionDelegate {
+    func checkWaitingForConnectivity() {
+        delegate?.networkUnavailableAction()
     }
 }
 

@@ -7,22 +7,20 @@
 
 import Foundation
 
+protocol NSAPIConfigurationSessionDelegate {
+    func checkWaitingForConnectivity()
+}
+
 /// Essa classe é o start da aplicação e contem as configurações iniciais
 public class NSAPIConfiguration {
-    
     public static var shared = NSAPIConfiguration()
     
-    var session:URLSession {
-        let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = [
-            "Content-Type":"application/json",
-            "Accept":"application/json"
-        ]
-        
-        return URLSession(configuration: configuration)
+    var delegate: NSAPIConfigurationSessionDelegate?
+    
+    var apiConnection: NSAPIURLSession {
+        return NSAPIURLSession(delegate: self)
     }
     
-   
     private(set) var baseUrl = ""
     
     public func setBaseUrl(_ url:String) {
@@ -35,5 +33,12 @@ public class NSAPIConfiguration {
         self.port = port
     }
 }
+
+extension NSAPIConfiguration: NSURLSessionConnectivity {
+    func checkWaitingForConnectivity() {
+        delegate?.checkWaitingForConnectivity()
+    }
+}
+
 
  

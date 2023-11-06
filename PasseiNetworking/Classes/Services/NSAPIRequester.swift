@@ -19,7 +19,7 @@ class NSAPIRequester {
     private var isCancelableRequestGetRefreshToken:Bool = false;
     
     private var session:URLSession {
-        NSAPIConfiguration.shared.session
+        NSAPIConfiguration.shared.apiConnection.session
     }
     
  
