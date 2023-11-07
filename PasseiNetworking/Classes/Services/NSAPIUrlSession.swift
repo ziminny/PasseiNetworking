@@ -25,10 +25,7 @@ public class NSAPIURLSession: NSObject, URLSessionTaskDelegate {
         configuration.allowsCellularAccess = true
         configuration.allowsExpensiveNetworkAccess = true
         configuration.allowsConstrainedNetworkAccess = true
-        configuration.httpAdditionalHeaders = [
-            "Content-Type":"application/json",
-            "Accept":"application/json"
-        ]
+        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
         
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }
