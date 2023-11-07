@@ -9,9 +9,9 @@ import Foundation
 
 struct HTTPHeaderConfiguration {
     enum Keys:String {
-        case accept = "Accept"
-        case contentType = "Content-Type"
-        case userAgent = "User-Agent"
-        case lang = "Lang"
+        case accept = "accept"
+        case contentType = "content-type"
+        case userAgent = "user-agent"
+        case lang = "lang"
     }
 }
