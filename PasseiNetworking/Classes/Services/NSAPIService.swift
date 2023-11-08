@@ -9,6 +9,7 @@ import Foundation
 import PasseiLogManager
 
 public protocol NSAPIServiceDelegate {
+    var configurationSession:URLSessionConfiguration { get }
     func networkUnavailableAction()
 }
 
@@ -121,6 +122,10 @@ public class NSAPIService {
 }
 
 extension NSAPIService: NSAPIConfigurationSessionDelegate {
+    var configurationSession: URLSessionConfiguration {
+        delegate?.configurationSession ?? .noBackgroundTask
+    }
+    
     func checkWaitingForConnectivity() {
         delegate?.networkUnavailableAction()
     }

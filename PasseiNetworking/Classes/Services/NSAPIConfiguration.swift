@@ -8,6 +8,7 @@
 import Foundation
 
 protocol NSAPIConfigurationSessionDelegate {
+    var configurationSession:URLSessionConfiguration { get }
     func checkWaitingForConnectivity()
 }
 
@@ -16,6 +17,8 @@ public class NSAPIConfiguration {
     public static var shared = NSAPIConfiguration()
     
     var delegate: NSAPIConfigurationSessionDelegate?
+    
+    var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
     
     var apiConnection: NSAPIURLSession {
         return NSAPIURLSession(delegate: self)

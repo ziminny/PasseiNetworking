@@ -22,8 +22,6 @@ class NSAPIRequester {
         NSAPIConfiguration.shared.apiConnection.session
     }
     
- 
-    
     private let port:Int = NSAPIConfiguration.shared.port
     private let baseURL:String = NSAPIConfiguration.shared.baseUrl
     

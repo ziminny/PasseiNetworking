@@ -6,38 +6,37 @@
 //
 
 import Foundation
+import Network
 
 /// Comunicar que a conexão está sendo aguardada para a NSAPIService
 protocol NSURLSessionConnectivity {
+    
+    var configurationSession:URLSessionConfiguration { get }
     func checkWaitingForConnectivity()
 }
 
-public class NSAPIURLSession: NSObject, URLSessionTaskDelegate {
+extension NSURLSessionConnectivity {
+    var configurationSession:URLSessionConfiguration { .noBackgroundTask }
+}
+
+public class NSAPIURLSession: NSObject, URLSessionTaskDelegate,URLSessionDelegate {
     var delegate: NSURLSessionConnectivity
     
     init(delegate: NSURLSessionConnectivity) {
         self.delegate = delegate
     }
 
-    var session:URLSession {
-        let configuration = URLSessionConfiguration.default
-        configuration.waitsForConnectivity = true
-        configuration.allowsCellularAccess = true
-        configuration.allowsExpensiveNetworkAccess = true
-        configuration.allowsConstrainedNetworkAccess = true
-        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
-        
-        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-    }
+    lazy var session:URLSession = {
+        return URLSession(configuration: delegate.configurationSession, delegate: self, delegateQueue: nil)
+    }()
+    
     
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
         delegate.checkWaitingForConnectivity()
-        minimumTimeoutToCancelSession()
+        // Preciso estudar sobre isso aqui
+        //session.finishTasksAndInvalidate()
     }
+
     
-    public func minimumTimeoutToCancelSession() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.session.invalidateAndCancel()
-        }
-    }
 }
+
