@@ -1,177 +1,71 @@
 //
-//  File.swift
-//  
+//  NSAPIUrlSession.swift
+//  PasseiNetworking
 //
-//  Created by Vagner Oliveira on 02/06/23.
+//  Created by Humberto Rodrigues on 06/11/23.
 //
 
 import Foundation
-import PasseiLogManager
 import Network
 
-public protocol NSAPIServiceDelegate {
+/// Comunicar que a conexão está sendo aguardada para a NSAPIService
+protocol NSURLSessionConnectivity {
+    
     var configurationSession:URLSessionConfiguration { get }
-    func networkUnavailableAction(withURL url:URL?)
+    func checkWaitingForConnectivity(withURL url:URL?)
 }
 
-/// Essa classe é exposta para o cliente
-@available(iOS 13.0.0, *)
-public class NSAPIService {
-    
-    private var nsParameters:NSParameters?
-    private var apiRequester:NSAPIRequester =  NSAPIRequester()
-    
-    /// Ao criar no módulo solicitado um NSAPIService, caso queira verificar a disponibilidade da internet, entregar a responsabilidade desse delegate
-    public var delegate: NSAPIServiceDelegate?
-    
-    public init() {
-        NSAPIConfiguration.shared.delegate = self
-    }
-    
-    @discardableResult
-    public func interceptor(_ interceptor:NSRequestInterceptor) -> Self {
-        apiRequester.interceptor = interceptor
-        return self
-    }
-    
-    @discardableResult
-    public func authorization(_ authorization:NSAuthorization) -> Self {
-        apiRequester.authorization = authorization
-        return self
-    }
-    
-    @discardableResult
-    public func customURL(_ nsCustomBaseURLInterceptor:NSCustomBaseURLInterceptor) -> Self {
-        apiRequester.baseURLInterceptor = nsCustomBaseURLInterceptor
-        return self
-    }
-    
-    /// Requisição de forma assincrona
-    /// - Exemplo:
-    ///     ```
-    ///     func auth(request:OABAuthRequestModel) async throws  -> OABAuthResponseModel? {
-    ///
-    ///          let apiService = NSAPIService()
-    ///
-    ///          let nsParameters = NSParameters(
-    ///          method: .POST,
-    ///          httpRequest: request,
-    ///          path: .passeiOAB(.auth)
-    ///         )
-    ///
-    ///         let response = try await apiService.fetchAsync(OABAuthResponseModel.self, nsParameters: nsParameters)
-    ///
-    ///         return response
-    ///
-    ///     }
-    ///     ```
-    public func fetchAsync<T:NSModel>(_ httpResponse:T.Type, nsParameters:NSParameters) async throws -> T? {
-        
-        try self.breakRequestIfNotBakgroundTask()
-        
-        return try await apiRequester.fetch(
-                witHTTPResponse:httpResponse,
-                andNSParameters:nsParameters
-            )
-    }
-    
-    @discardableResult
-    public func setNSParamns(withParameters nsParameters:NSParameters) -> Self {
-        self.nsParameters = nsParameters
-        return self
-    }
-    
+extension NSURLSessionConnectivity {
+    var configurationSession:URLSessionConfiguration { .noBackgroundTask }
+}
 
-    /// Requisição com closure
-    /// - Exemplo:
-    ///     ```
-    ///       func auth() {
-    ///           // ...
-    ///           // nsParameters
-    ///           // ...
-    ///           let apiService = NSAPIService()
-    ///           apiService.fetch(MyModel.self) { result in
-    ///               switch result {
-    ///               case .success(let myModel):
-    ///                   break;
-    ///               case .failure(let error):
-    ///                   break;
-    ///               }
-    ///          }
-    ///      }
-    ///     ```
-    @discardableResult
-    public func fetch<T:NSModel>(_ httpResponse:T.Type,closure: @escaping (Result<T,Error>) -> Void ) -> Task<Void, Error> {
+public class NSAPIURLSession: NSObject, URLSessionTaskDelegate,URLSessionDelegate {
+    var delegate: NSURLSessionConnectivity
+    
+    init(delegate: NSURLSessionConnectivity) {
+        self.delegate = delegate
+    }
+
+    lazy var session:URLSession = {
+        return URLSession(configuration: delegate.configurationSession, delegate: self, delegateQueue: nil)
+    }()
+    
+    public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
+        delegate.checkWaitingForConnectivity(withURL: task.response?.url)
         
-          Task {
-        
-            do {
-                
-                try self.breakRequestIfNotBakgroundTask()
-                
-                guard let nsParameters = nsParameters else {
-                    throw NSAPIError.unknowError()
-                }
-                
-                let response = try await apiRequester.fetch(
-                        witHTTPResponse:httpResponse,
-                        andNSParameters:nsParameters
-                    )
-                closure(.success(response))
-            } catch {
-                LogManager.dispachLog("error: \(#function) \(error.localizedDescription)")
-                closure(.failure(error))
-            }
-          
+        if delegate.configurationSession == .noBackgroundTask {
+            // Sempre que chama esse metodo ( session.invalidateAndCancel() ) o metodo urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
+            // é chamado com o parametro didBecomeInvalidWithError nil
+            // TODO: Atenção, esse metodo cancela todas as requisicoes que fazem parte da mesma session
+            // session.invalidateAndCancel()
+            
+            // Cancela somente a requisicao atual e não dispara o metodo urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
+            // gera um erro do tipo cancelled
+            task.cancel()
         }
+       
     }
     
-    private func breakRequestIfNotBakgroundTask() throws{
-        if delegate?.configurationSession == nil {
-            if !self.isConnectedToNetwork() {
-                throw NSAPIError.noInternetConnection
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+         // Erro do lado do cliente
+    }
+    
+    public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if let error = error as? URLError {
+            switch error.code {
+            case .notConnectedToInternet:
+                print("notConnectedToInternet")
+                break;
+            case .networkConnectionLost:
+                print("networkConnectionLost")
+                break;
+            default:
+                break;
             }
         }
     }
     
-    private func isConnectedToNetwork() -> Bool {
-        let monitor = NWPathMonitor()
-
-        let semaphore = DispatchSemaphore(value: 0)
-
-        var isConnected = false
-
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                isConnected = true
-            } else {
-                isConnected = false
-            }
-
-            semaphore.signal()
-        }
-
-        let queue = DispatchQueue(label: "networkMonitor")
-        monitor.start(queue: queue)
-
-        semaphore.wait()
-
-        return isConnected
-    }
-}
-
-extension NSAPIService: NSAPIConfigurationSessionDelegate {
-    func checkWaitingForConnectivity(withURL url: URL?) {
-        delegate?.networkUnavailableAction(withURL: url)
-    }
+ 
     
-    var configurationSession: URLSessionConfiguration {
-        delegate?.configurationSession ?? .noBackgroundTask
-    }
 }
-
-
-
-
-
 

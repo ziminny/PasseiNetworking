@@ -72,7 +72,7 @@ public extension URLSessionConfiguration {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = HTTPHeader.headerDict
         // Não vai esperar, caso de erro ja lança para o usuário
-        configuration.waitsForConnectivity = false
+        configuration.waitsForConnectivity = true
         // Pode usar 3G
         configuration.allowsCellularAccess = true
         // Geralmente vai ser requisicoes leves "barata"

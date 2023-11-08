@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import PasseiLogManager
 
 /// Erro de retorno do backend
 ///  - Atributos
@@ -23,3 +24,26 @@ public enum NSAPIError:Error {
     case noInternetConnection
 }
 
+public extension NSAPIError {
+    static func outherError(withError error:Error,callback: @escaping (String) -> Void) {
+        if let error = error as NSError? {
+            if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                #if DEBUG
+                    LogManager.dispachLog("Erro de comunicação com a api \(Self.self) \(#function)")
+                    callback("Erro de comunicação com a api \(Self.self) \(#function)")
+                #else
+                    callback(.info("Erro de comunicação com a api"))
+                #endif
+            } else {
+                #if DEBUG
+                    LogManager.dispachLog("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
+                    callback("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
+                #else
+                    callback(.info("Erro desconhecido, tente novamente mais tarte"))
+                #endif
+               
+            }
+        }
+    }
+}
+ 

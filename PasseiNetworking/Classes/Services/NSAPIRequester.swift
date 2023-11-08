@@ -149,6 +149,7 @@ class NSAPIRequester {
         }
         
         guard let urlWithComponents = urlComponents?.url else {
+            print("ERRO AQUI")
             throw dispachError("error \(#function) url parser")
      
         }

@@ -35,6 +35,8 @@ public class NSAPIConfiguration {
     public func setPort(_ port:Int) {
         self.port = port
     }
+    
+    
 }
 
 extension NSAPIConfiguration: NSURLSessionConnectivity {

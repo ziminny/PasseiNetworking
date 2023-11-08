@@ -10,7 +10,6 @@ import Network
 
 /// Comunicar que a conexão está sendo aguardada para a NSAPIService
 protocol NSURLSessionConnectivity {
-    
     var configurationSession:URLSessionConfiguration { get }
     func checkWaitingForConnectivity(withURL url:URL?)
 }
