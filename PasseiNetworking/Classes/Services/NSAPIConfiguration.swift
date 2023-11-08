@@ -9,7 +9,7 @@ import Foundation
 
 protocol NSAPIConfigurationSessionDelegate {
     var configurationSession:URLSessionConfiguration { get }
-    func checkWaitingForConnectivity()
+    func checkWaitingForConnectivity(withURL url: URL?)
 }
 
 /// Essa classe é o start da aplicação e contem as configurações iniciais
@@ -38,8 +38,8 @@ public class NSAPIConfiguration {
 }
 
 extension NSAPIConfiguration: NSURLSessionConnectivity {
-    func checkWaitingForConnectivity() {
-        delegate?.checkWaitingForConnectivity()
+    func checkWaitingForConnectivity(withURL url: URL?) {
+        delegate?.checkWaitingForConnectivity(withURL: url)
     }
 }
 

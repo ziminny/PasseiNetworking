@@ -12,7 +12,7 @@ import Network
 protocol NSURLSessionConnectivity {
     
     var configurationSession:URLSessionConfiguration { get }
-    func checkWaitingForConnectivity()
+    func checkWaitingForConnectivity(withURL url:URL?)
 }
 
 extension NSURLSessionConnectivity {
@@ -32,7 +32,7 @@ public class NSAPIURLSession: NSObject, URLSessionTaskDelegate,URLSessionDelegat
     
     
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        delegate.checkWaitingForConnectivity()
+        delegate.checkWaitingForConnectivity(withURL: task.response?.url)
         // Preciso estudar sobre isso aqui
         //session.finishTasksAndInvalidate()
     }

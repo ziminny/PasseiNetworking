@@ -20,5 +20,6 @@ public enum NSAPIError:Error {
     case unknowError(String? = nil)
     case info(String)
     case acknowledgedByAPI(NSAcknowledgedByAPI)
+    case noInternetConnection
 }
 

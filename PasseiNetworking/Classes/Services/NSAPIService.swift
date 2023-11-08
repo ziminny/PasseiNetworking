@@ -7,10 +7,11 @@
 
 import Foundation
 import PasseiLogManager
+import Network
 
 public protocol NSAPIServiceDelegate {
     var configurationSession:URLSessionConfiguration { get }
-    func networkUnavailableAction()
+    func networkUnavailableAction(withURL url:URL?)
 }
 
 /// Essa classe é exposta para o cliente
@@ -65,6 +66,9 @@ public class NSAPIService {
     ///     }
     ///     ```
     public func fetchAsync<T:NSModel>(_ httpResponse:T.Type, nsParameters:NSParameters) async throws -> T? {
+        
+        try self.breakRequestIfNotBakgroundTask()
+        
         return try await apiRequester.fetch(
                 witHTTPResponse:httpResponse,
                 andNSParameters:nsParameters
@@ -103,6 +107,8 @@ public class NSAPIService {
         
             do {
                 
+                try self.breakRequestIfNotBakgroundTask()
+                
                 guard let nsParameters = nsParameters else {
                     throw NSAPIError.unknowError()
                 }
@@ -119,17 +125,52 @@ public class NSAPIService {
           
         }
     }
+    
+    private func breakRequestIfNotBakgroundTask() throws{
+        if delegate?.configurationSession == nil {
+            if !self.isConnectedToNetwork() {
+                throw NSAPIError.noInternetConnection
+            }
+        }
+    }
+    
+    private func isConnectedToNetwork() -> Bool {
+        let monitor = NWPathMonitor()
+
+        let semaphore = DispatchSemaphore(value: 0)
+
+        var isConnected = false
+
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                isConnected = true
+            } else {
+                isConnected = false
+            }
+
+            semaphore.signal()
+        }
+
+        let queue = DispatchQueue(label: "networkMonitor")
+        monitor.start(queue: queue)
+
+        semaphore.wait()
+
+        return isConnected
+    }
 }
 
 extension NSAPIService: NSAPIConfigurationSessionDelegate {
+    func checkWaitingForConnectivity(withURL url: URL?) {
+        delegate?.networkUnavailableAction(withURL: url)
+    }
+    
     var configurationSession: URLSessionConfiguration {
         delegate?.configurationSession ?? .noBackgroundTask
     }
-    
-    func checkWaitingForConnectivity() {
-        delegate?.networkUnavailableAction()
-    }
 }
+
+
 
 
 
