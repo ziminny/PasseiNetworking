@@ -32,8 +32,9 @@ public class NSAPIURLSession: NSObject, URLSessionTaskDelegate,URLSessionDelegat
     
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
         delegate.checkWaitingForConnectivity(withURL: task.response?.url)
-        // Preciso estudar sobre isso aqui
-        //session.finishTasksAndInvalidate()
+        if delegate.configurationSession == .noBackgroundTask {
+            task.cancel()
+        }
     }
 
     
