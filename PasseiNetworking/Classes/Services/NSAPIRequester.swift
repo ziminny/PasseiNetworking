@@ -10,7 +10,7 @@ import PasseiLogManager
 
 /// Responsável por fazer as requisições na API
 @available(iOS 13.0.0, *)
-class NSAPIRequester {
+final class NSAPIRequester {
     
     var interceptor:NSRequestInterceptor?
     
@@ -18,12 +18,12 @@ class NSAPIRequester {
     
     private var isCancelableRequestGetRefreshToken:Bool = false;
     
-    private var session:URLSession {
-        NSAPIConfiguration.shared.apiConnection.session
-    }
+    var configuration:NSAPIConfiguration { NSAPIConfiguration.shared }
     
-    private let port:Int = NSAPIConfiguration.shared.port
-    private let baseURL:String = NSAPIConfiguration.shared.baseUrl
+    private var session:URLSession { configuration.apiConnection.session }
+    
+    private var port:Int { configuration.port }
+    private var baseURL:String { configuration.baseUrl }
     
     var baseURLInterceptor:NSCustomBaseURLInterceptor?
     
@@ -258,6 +258,4 @@ class NSAPIRequester {
         throw NSAPIError.acknowledgedByAPI(resultError)
         
     }
-    
-   
 }

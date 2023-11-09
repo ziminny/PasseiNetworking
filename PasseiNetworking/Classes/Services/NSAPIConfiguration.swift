@@ -13,10 +13,12 @@ protocol NSAPIConfigurationSessionDelegate {
 }
 
 /// Essa classe é o start da aplicação e contem as configurações iniciais
-public class NSAPIConfiguration {
-    public static var shared = NSAPIConfiguration()
+public final class NSAPIConfiguration {
+    public static var shared:NSAPIConfiguration = NSAPIConfiguration()
     
     var delegate: NSAPIConfigurationSessionDelegate?
+    
+    private init() { }
     
     var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
     
@@ -35,12 +37,10 @@ public class NSAPIConfiguration {
     public func setPort(_ port:Int) {
         self.port = port
     }
-    
-    
 }
 
 extension NSAPIConfiguration: NSURLSessionConnectivity {
-    func checkWaitingForConnectivity(withURL url: URL?) {
+   nonisolated func checkWaitingForConnectivity(withURL url: URL?) {
         delegate?.checkWaitingForConnectivity(withURL: url)
     }
 }

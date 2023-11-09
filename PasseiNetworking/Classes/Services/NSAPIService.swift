@@ -19,13 +19,13 @@ public protocol NSAPIServiceDelegate {
 public class NSAPIService {
     
     private var nsParameters:NSParameters?
-    private var apiRequester:NSAPIRequester =  NSAPIRequester()
+    private var apiRequester:NSAPIRequester = NSAPIRequester()
     
     /// Ao criar no módulo solicitado um NSAPIService, caso queira verificar a disponibilidade da internet, entregar a responsabilidade desse delegate
     public var delegate: NSAPIServiceDelegate?
     
-    public init() {
-        NSAPIConfiguration.shared.delegate = self
+    public init() { 
+        apiRequester.configuration.delegate = self
     }
     
     @discardableResult

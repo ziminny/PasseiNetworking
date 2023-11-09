@@ -32,14 +32,14 @@ public extension NSAPIError {
                     LogManager.dispachLog("Erro de comunicação com a api \(Self.self) \(#function)")
                     callback("Erro de comunicação com a api \(Self.self) \(#function)")
                 #else
-                    callback(.info("Erro de comunicação com a api"))
+                    callback("Erro de comunicação com a api")
                 #endif
             } else {
                 #if DEBUG
                     LogManager.dispachLog("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
                     callback("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
                 #else
-                    callback(.info("Erro desconhecido, tente novamente mais tarte"))
+                    callback("Erro desconhecido, tente novamente mais tarte")
                 #endif
                
             }
