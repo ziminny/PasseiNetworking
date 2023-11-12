@@ -5,6 +5,8 @@
 //  Created by Vagner Oliveira on 02/06/23.
 //
 
+import Network
+
 public class NSNetworkStatus:ObservableObject {
 
     @Published public var isConnected = true

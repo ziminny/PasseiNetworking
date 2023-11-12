@@ -128,9 +128,11 @@ public class NSAPIService {
     
     private func breakRequestIfNotBakgroundTask() throws{
         if delegate?.configurationSession == nil || delegate?.configurationSession == .noBackgroundTask {
-            if !self.isConnectedToNetwork() {
+            let service = NSNetworkStatus(queue: .global())
+            if !service.isConnected {
                 throw NSAPIError.noInternetConnection
             }
+ 
         }
     }
     
@@ -146,33 +148,7 @@ extension NSAPIService: NSAPIConfigurationSessionDelegate {
     }
 }
 
-// Conectividade
-fileprivate extension NSAPIService {
-    private func isConnectedToNetwork() -> Bool {
-        let monitor = NWPathMonitor()
-
-        let semaphore = DispatchSemaphore(value: 0)
-
-        var isConnected = false
-
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                isConnected = true
-            } else {
-                isConnected = false
-            }
-
-            semaphore.signal()
-        }
-
-        let queue = DispatchQueue(label: "networkMonitor")
-        monitor.start(queue: queue)
-
-        semaphore.wait()
-
-        return isConnected
-    }
-}
+ 
 
 
 
