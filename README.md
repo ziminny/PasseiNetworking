@@ -190,7 +190,7 @@ class Service {
 ```
 
 ## Adicionando delegate
-Você pode adicionar um delegate para mudar algumas configurações, como por exemplo se é uma requisição demorada
+Você pode adicionar um delegate para mudar algumas configurações, como por exemplo em uma requisição demorada, e/ou a URL de uma requisição que falhou
 ```swift
 extension OABPasswordRecoveryService:NSAPIServiceDelegate {
     
