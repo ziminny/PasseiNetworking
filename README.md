@@ -190,6 +190,8 @@ class Service {
 }
 ```
 
+Esse pacote funciona mas ainda esta sendo implementado melhorias
+
 ## Author
 ziminny@gmail.com
 
