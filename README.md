@@ -151,7 +151,7 @@ class Service {
     
     let factory:NSHTTPServiceFactoryProtocol
     
-    required init(withFactory factory:NSHTTPServiceFactoryProtocol) {
+    init(withFactory factory:NSHTTPServiceFactoryProtocol) {
         self.factory = factory
     }
     
