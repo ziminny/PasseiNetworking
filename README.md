@@ -98,14 +98,14 @@ public enum OABAPIPath {
 }
 
 
-/// Paths da aplicatico PasseiOAB
+/// Paths da aplicatico
 public enum MyAppPathA:String {
-    case auth = "auth/login"
-    case serviceGetAll = "service/get-all"
+    case auth = "auth"
+    case resiter = "register"
 }
 
 public enum MyAppPathB:String {
-    case roadmap = "/v1/chat/completions"
+    case outher = "outher"
 }
 
 extension OABAPIPath:NSRawValue {
