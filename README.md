@@ -86,22 +86,22 @@ apiService.customURL(baseURLInterceptor)
 ## Tratamento de Erros
 A NSAPIService retorna um Result com sucesso ou falha. Certifique-se de lidar com possíveis erros em suas chamadas de requisição.
 ```swift
-    case .failure(let error):
-        if let nsError = error as? NSAPIError {
-            switch nsError {
-            case .unknowError(let string):
-                break;
-            case .info(let string):
-                break;
-            case .acknowledgedByAPI(let nSAcknowledgedByAPI):
-                break;
-            case .noInternetConnection:
-                break;
-            }
-            return
+case .failure(let error):
+    if let nsError = error as? NSAPIError {
+        switch nsError {
+        case .unknowError(let string):
+            break;
+        case .info(let string):
+            break;
+        case .acknowledgedByAPI(let nSAcknowledgedByAPI):
+            break;
+        case .noInternetConnection:
+            break;
         }
-        
-        NSAPIError.outherError(withError: error) { e in }
+        return
+    }
+
+NSAPIError.outherError(withError: error) { e in }
 ```
 
 ## Paths
