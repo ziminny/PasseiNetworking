@@ -84,21 +84,88 @@ apiService.customURL(baseURLInterceptor)
 ## Tratamento de Erros
 A NSAPIService retorna um Result com sucesso ou falha. Certifique-se de lidar com possíveis erros em suas chamadas de requisição.
 
-# Chame um request para cada requisição, caso prefira fazer mais de uma requisição na mesma instância da sua service class utilizar a factory:
-
+## Paths
+Aqui esta um exemplo de como configurar seus paths:
 ```swift
-public protocol NSHTTPServiceFactoryProtocol {
-     var service:NSAPIService { get }
+import Foundation
+import PasseiNetworking
+
+
+/// Todos os paths dos aplicativos, caso exista mais de um
+public enum OABAPIPath {
+    case caseA(MyAppPathA)
+    case caseB(MyAppPathB)
 }
 
-public class NSHTTPServiceFactory:NSHTTPServiceFactoryProtocol {
+
+/// Paths da aplicatico PasseiOAB
+public enum MyAppPathA:String {
+    case auth = "auth/login"
+    case serviceGetAll = "service/get-all"
+}
+
+public enum MyAppPathB:String {
+    case roadmap = "/v1/chat/completions"
+}
+
+extension OABAPIPath:NSRawValue {
+    public var rawValue: String {
+        switch self {
+        case .caseA(let subcase):
+            return subcase.rawValue
+            
+        case .caseB(let subcase):
+            return subcase.rawValue
+            
+        }
+    }
+}
+
+```
+
+# Chame um request para cada requisição, caso prefira fazer mais de uma requisição na mesma instância da sua service class utilizar a factory:
+Aqui esta um exemplo mais completo
+
+```swift
+class Service {
     
-    public init() {}
+    let factory:NSHTTPServiceFactoryProtocol
     
-    public var service:NSAPIService {
-        return NSAPIService()
+    required init(withFactory factory:NSHTTPServiceFactoryProtocol) {
+        self.factory = factory
     }
     
+    func getCurrent() async throws -> MyResponse? {
+        
+        let response = try await factory.service
+          .interceptor(DefaultInterceptor())
+            .fetchAsync(
+                MyRequest.self,
+                nsParameters:NSParameters(
+                    method: .GET,
+                    path: MYPATH.name(.user)
+                )
+            )
+        
+        return response
+        
+    }
+    
+    func update(request:MyRequest) async throws  {
+        
+        let _ = try await factory.service
+          .interceptor(DefaultInterceptor())
+          .authorization(DefaltAuthorization())
+            .fetchAsync(
+                NSEmptyModel.self, //Resposta sem dados. Assim -> {}
+                nsParameters:NSParameters(
+                    method: .POST,
+                    httpRequest: request,
+                    path: MYPATH.name(.outherPath)
+                )
+            )
+    }
+
 }
 ```
 
