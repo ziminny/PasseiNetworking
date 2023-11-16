@@ -38,7 +38,7 @@ public class NSNetworkStatus:ObservableObject {
             semaphore.signal()
         }
 
-        let queue = DispatchQueue(label: "networkMonitor")
+        let queue = DispatchQueue.global()
         monitor.start(queue: queue)
 
         semaphore.wait()
