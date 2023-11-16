@@ -77,7 +77,7 @@ apiService.customURL(baseURLInterceptor)
 ## Tratamento de Erros
 A NSAPIService retorna um Result com sucesso ou falha. Certifique-se de lidar com possíveis erros em suas chamadas de requisição.
 
-# Chame um request para cada requisição, caso prefira fazer mais de uma requisição por classe utilizar a factory:
+# Chame um request para cada requisição, caso prefira fazer mais de uma requisição na mesma instância da sua service class utilizar a factory:
 
 ```swift
 public protocol NSHTTPServiceFactoryProtocol {
