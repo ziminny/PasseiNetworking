@@ -189,6 +189,21 @@ class Service {
 }
 ```
 
+## Adicionando delegate
+Você pode adicionar um delegate para mudar algumas configurações, como por exemplo se é uma requisição demorada
+```swift
+extension OABPasswordRecoveryService:NSAPIServiceDelegate {
+    
+    // Add delegate factory.service.delegate = self
+    
+    var configurationSession: URLSessionConfiguration { .timeConsumingBackgroundTasks }
+    
+    func networkUnavailableAction(withURL url: URL?) {
+         
+    }
+}
+```
+
 Esse pacote funciona mas ainda esta sendo implementado melhorias
 
 ## Author
