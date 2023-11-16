@@ -29,8 +29,8 @@ let apiService = NSAPIService()
 ## URL Base e Porta
 Antes de tudo, pode ser na AppDelegate, adicione:
 ```swift
-NSAPIConfiguration.shared.setBaseUrl(OABURLConfigs.API.baseUrl)
-NSAPIConfiguration.shared.setPort(OABURLConfigs.API.port)
+NSAPIConfiguration.shared.setBaseUrl("http://localhost")
+NSAPIConfiguration.shared.setPort(3000)
 ```
 
 ## Configuração de Interceptor
