@@ -18,6 +18,7 @@ Para usar a `NSAPIService` em seu projeto, siga os passos abaixo:
 ```swift
 import PasseiLogManager
 import NSAPIService
+```
 
 ## Criação de uma Instância da NSAPIService
 Crie uma instância da NSAPIService em seu código:
