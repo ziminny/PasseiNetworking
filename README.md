@@ -16,7 +16,7 @@ Para usar a `NSAPIService` em seu projeto, siga os passos abaixo:
 ### Importar o Módulo
 
 ```swift
-import NSAPIService
+import PasseiNetworking
 ```
 
 ## Criação de uma Instância da NSAPIService
