@@ -7,7 +7,7 @@
 
 A `NSAPIService` é uma classe que oferece funcionalidades para realizar requisições de API de forma assíncrona e com suporte a interceptação de requisições.
 
-### Esse pacote depende do pacote LogManager
+### Esse pacote depende do pacote PasseiLogManager, caso queira usar verificação de JTW usar o pacote PasseiJWT (Sem documentação ainda)
 
 ## Uso Básico
 
