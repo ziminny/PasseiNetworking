@@ -23,6 +23,13 @@ Crie uma instância da NSAPIService em seu código:
 let apiService = NSAPIService()
 ```
 
+## Base URL e Porta
+Antes de tudo, pode ser na AppDelegate, adicione:
+```swift
+NSAPIConfiguration.shared.setBaseUrl(OABURLConfigs.API.baseUrl)
+NSAPIConfiguration.shared.setPort(OABURLConfigs.API.port)
+```
+
 ## Configuração de Interceptor
 A NSAPIService permite configurar interceptores para modificar ou adicionar informações às requisições. Por exemplo:
 ```swift
