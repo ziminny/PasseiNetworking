@@ -22,7 +22,7 @@ final class NSAPIRequester {
     
     private var session:URLSession { configuration.apiConnection.session }
     
-    private var port:Int { configuration.port }
+    private var port:Int? { configuration.port }
     private var baseURL:String { configuration.baseUrl }
     
     var baseURLInterceptor:NSCustomBaseURLInterceptor?
@@ -36,7 +36,11 @@ final class NSAPIRequester {
             return "\(baseURLInterceptor.baseURL):\(port)/\(path)"
         }
         
-        return "\(String(describing: self.baseURL)):\(self.port)/\(path)"
+        if let port = self.port {
+            return "\(String(describing: self.baseURL)):\(port)/\(path)"
+        }
+        
+        return "\(String(describing: self.baseURL))/\(path)"
     }
     
     private func url(withPath path:String) throws -> URL {

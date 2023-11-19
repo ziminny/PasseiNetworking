@@ -32,7 +32,7 @@ public final class NSAPIConfiguration {
         self.baseUrl = url
     }
     
-    private(set) var port = 0
+    private(set) var port:Int? = nil
     
     public func setPort(_ port:Int) {
         self.port = port
