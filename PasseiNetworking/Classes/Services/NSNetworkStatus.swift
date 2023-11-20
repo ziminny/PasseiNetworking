@@ -13,26 +13,14 @@ public class NSNetworkStatus:ObservableObject {
     
     public init(queue:DispatchQueue = .main) {
         let monitor = NWPathMonitor()
-        
-        let localQueue:((_ callback: @escaping () -> Void) -> Void) = { callback in
-            if queue == Thread.main {
-                DispatchQueue.main.async {
-                    callback()
-                }
-            } else {
-                DispatchQueue.global().sync {
-                   callback()
-                }
-            }
-        }
-   
+           
         let semaphore = DispatchSemaphore(value: 0)
 
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
-                localQueue { self.isConnected = true }
+                queue.async { self.isConnected = true }
             } else {
-                localQueue { self.isConnected = false }
+                queue.async { self.isConnected = false }
             }
 
             semaphore.signal()
