@@ -5,44 +5,62 @@
 [![License](https://img.shields.io/cocoapods/l/PasseiNetworking.svg?style=flat)](https://cocoapods.org/pods/PasseiNetworking)
 [![Platform](https://img.shields.io/cocoapods/p/PasseiNetworking.svg?style=flat)](https://cocoapods.org/pods/PasseiNetworking)
 
-A `NSAPIService` é uma classe que oferece funcionalidades para realizar requisições de API de forma assíncrona e com suporte a interceptação de requisições.
+## 🔎 Sobre
 
-### Esse pacote depende do pacote PasseiLogManager, caso queira usar verificação de JTW usar o pacote PasseiJWT (Sem documentação ainda)
+`PasseiNetworking` é uma poderosa e flexível biblioteca em Swift para realizar requisições de API de forma assíncrona, com suporte a interceptação de requisições.
 
-## Uso Básico
+### 🛠️ Dependências
 
-Para usar a `NSAPIService` em seu projeto, siga os passos abaixo:
+- **PasseiLogManager**: Requerido para logs detalhados.
+- **PasseiJWT**: (Sem documentação ainda) - Verificação de JWT.
 
-### Importar o Módulo
+## 🔧 Instalação
+
+Para integrar `PasseiNetworking` ao seu projeto, adicione a seguinte linha ao seu arquivo `Podfile`:
+
+```ruby
+pod 'PasseiNetworking'
+```
+
+### Em seguida, execute o comando:
+
+```swift
+pod install
+```
+## ⚙️ Uso Básico
+
+Comece importando o módulo em seu código:
 
 ```swift
 import PasseiNetworking
 ```
+### 1. Criação de uma Instância da NSAPIService
+Crie uma instância da NSAPIService:
 
-## Criação de uma Instância da NSAPIService
-Crie uma instância da NSAPIService em seu código:
 ```swift
 let apiService = NSAPIService()
 ```
+### 2. Configuração de URL Base e Porta
+Antes de começar, defina a URL base e a porta na sua AppDelegate:
 
-## URL Base e Porta
-Antes de tudo, pode ser na AppDelegate, adicione:
 ```swift
 NSAPIConfiguration.shared.setBaseUrl("http://localhost")
 NSAPIConfiguration.shared.setPort(3000)
 ```
 
-## Configuração de Interceptor
-A NSAPIService permite configurar interceptores para modificar ou adicionar informações às requisições. Por exemplo:
+### 3. Configuração de Interceptor
+A NSAPIService permite a configuração de interceptadores para modificar ou adicionar informações às requisições. Por exemplo:
+
 ```swift
 let interceptor = NSRequestInterceptor()
 interceptor.addHeader("Authorization", value: "Bearer token")
 apiService.interceptor(interceptor)
 ```
-## Realização de Requisições
-Após configurar a NSAPIService, você pode fazer requisições de forma assíncrona usando a função fetchAsync ou com uma closure usando fetch:
 
-- Requisição Assíncrona:
+### 4. Realização de Requisições
+Depois de configurar a NSAPIService, você pode fazer requisições de forma assíncrona usando a função fetchAsync ou com uma closure usando fetch.
+
+Requisição Assíncrona:
 ```swift
 let nsParameters = NSParameters(method: .GET, path: .examplePath)
 do {
@@ -53,8 +71,9 @@ do {
 }
 ```
 
-- Requisição com Closure
-```swift 
+Requisição com Closure
+
+```swift
 apiService.fetch(MyModel.self) { result in
     switch result {
     case .success(let myModel):
@@ -67,36 +86,40 @@ apiService.fetch(MyModel.self) { result in
 }
 ```
 
-## Configuração Avançada
+### 5. Configuração Avançada
 Interceptação de Requisições
-A NSAPIService suporta interceptadores para adicionar ou modificar informações das requisições. Aqui está um exemplo de como adicionar um interceptor:
+A NSAPIService suporta interceptadores para adicionar ou modificar informações das requisições. Exemplo:
+
 ```swift
 let interceptor = NSRequestInterceptor()
 interceptor.addHeader("Authorization", value: "Bearer token")
 apiService.interceptor(interceptor)
 ```
+Customização da URL
+Personalize a URL base para requisições utilizando NSCustomBaseURLInterceptor:
 
-## Customização da URL
-Você pode personalizar a URL base para requisições utilizando NSCustomBaseURLInterceptor:
 ```swift
 let baseURLInterceptor = NSCustomBaseURLInterceptor(baseURL: "https://api.example.com")
 apiService.customURL(baseURLInterceptor)
 ```
 
-## Tratamento de Erros
+## 🧰 Configuração Avançada
+
+### 1. Tratamento de Erros
 A NSAPIService retorna um Result com sucesso ou falha. Certifique-se de lidar com possíveis erros em suas chamadas de requisição.
+
 ```swift
 case .failure(let error):
     if let nsError = error as? NSAPIError {
         switch nsError {
         case .unknowError(let string):
-            break;
+            break
         case .info(let string):
-            break;
+            break
         case .acknowledgedByAPI(let nSAcknowledgedByAPI):
-            break;
+            break
         case .noInternetConnection:
-            break;
+            break
         }
         return
     }
@@ -104,12 +127,12 @@ case .failure(let error):
 NSAPIError.outherError(withError: error) { e in }
 ```
 
-## Paths
-Aqui esta um exemplo de como configurar seus paths:
+### 2. Paths
+Configure seus paths de maneira organizada:
+
 ```swift
 import Foundation
 import PasseiNetworking
-
 
 /// Todos os paths dos aplicativos, caso exista mais de um
 public enum OABAPIPath {
@@ -117,41 +140,38 @@ public enum OABAPIPath {
     case caseB(MyAppPathB)
 }
 
-
-/// Paths da aplicatico
-public enum MyAppPathA:String {
+/// Paths da aplicação
+public enum MyAppPathA: String {
     case auth = "auth"
     case resiter = "register"
 }
 
-public enum MyAppPathB:String {
+public enum MyAppPathB: String {
     case outher = "outher"
 }
 
-extension OABAPIPath:NSRawValue {
+extension OABAPIPath: NSRawValue {
     public var rawValue: String {
         switch self {
         case .caseA(let subcase):
             return subcase.rawValue
-            
+
         case .caseB(let subcase):
             return subcase.rawValue
-            
         }
     }
 }
-
 ```
 
-# Chame um request para cada requisição, caso prefira fazer mais de uma requisição na mesma instância da sua service class utilizar a factory:
-Aqui esta um exemplo mais completo
+### 3. Chamando um Request
+Exemplo mais completo utilizando uma factory:
 
 ```swift
 class Service {
     
-    let factory:NSHTTPServiceFactoryProtocol
+    let factory: NSHTTPServiceFactoryProtocol
     
-    init(withFactory factory:NSHTTPServiceFactoryProtocol) {
+    init(withFactory factory: NSHTTPServiceFactoryProtocol) {
         self.factory = factory
     }
     
@@ -161,40 +181,39 @@ class Service {
           .interceptor(DefaultInterceptor())
             .fetchAsync(
                 MyRequest.self,
-                nsParameters:NSParameters(
+                nsParameters: NSParameters(
                     method: .GET,
                     path: MYPATH.name(.user)
                 )
             )
-        
         return response
         
     }
     
-    func update(request:MyRequest) async throws  {
+    func update(request: MyRequest) async throws  {
         
         let _ = try await factory.service
           .interceptor(DefaultInterceptor())
           .authorization(DefaltAuthorization())
             .fetchAsync(
-                NSEmptyModel.self, //Resposta sem dados. Assim -> {}
-                nsParameters:NSParameters(
+                NSEmptyModel.self, // Resposta sem dados. Assim -> {}
+                nsParameters: NSParameters(
                     method: .POST,
                     httpRequest: request,
                     path: MYPATH.name(.outherPath)
                 )
             )
     }
-
 }
 ```
 
-## Adicionando delegate
-Você pode adicionar um delegate para mudar algumas configurações, como por exemplo em uma requisição demorada, e/ou a URL de uma requisição que falhou
+### 4. Adicionando Delegate
+Adicione um delegate para mudar algumas configurações:
+
 ```swift
-extension OABPasswordRecoveryService:NSAPIServiceDelegate {
+extension OABPasswordRecoveryService: NSAPIServiceDelegate {
     
-    // Add delegate factory.service.delegate = self
+    // Adicione delegate factory.service.delegate = self
     
     var configurationSession: URLSessionConfiguration { .timeConsumingBackgroundTasks }
     
@@ -204,10 +223,15 @@ extension OABPasswordRecoveryService:NSAPIServiceDelegate {
 }
 ```
 
-Esse pacote funciona mas ainda esta sendo implementado melhorias
+Este pacote está funcionando, mas ainda está sendo implementado melhorias.
 
-## Author
+## 📝 Autores
 ziminny@gmail.com
+gabrielmors210@gmail.com
 
-## Licença
+## 🔒 Licença
 MIT
+
+
+--------------------------------------------------------------------------------------------
+
