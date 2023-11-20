@@ -25,25 +25,16 @@ public enum NSAPIError:Error {
 }
 
 public extension NSAPIError {
-    static func outherError(withError error:Error,callback: @escaping (String) -> Void) {
+    static func outherError(withError error:Error,callback: @escaping (NSAPIError) -> Void) {
         if let error = error as NSError? {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-                #if DEBUG
-                    LogManager.dispachLog("Erro de comunicação com a api \(Self.self) \(#function)")
-                    callback("Erro de comunicação com a api \(Self.self) \(#function)")
-                #else
-                    callback("Erro de comunicação com a api")
-                #endif
-            } else {
-                #if DEBUG
-                    LogManager.dispachLog("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
-                    callback("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
-                #else
-                    callback("Erro desconhecido, tente novamente mais tarte")
-                #endif
-               
+                LogManager.dispachLog("Erro de comunicação com a api \(Self.self) \(#function)")
+                callback(NSAPIError.noInternetConnection)
+                return
             }
+            LogManager.dispachLog("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
+            callback(.unknowError())
         }
     }
 }
- 
+
