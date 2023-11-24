@@ -18,9 +18,13 @@ public class NSNetworkStatus:ObservableObject {
 
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
-                queue.async { self.isConnected = true }
+                DispatchQueue.main.async {
+                    self.isConnected = true
+                }
             } else {
-                queue.async { self.isConnected = false }
+                DispatchQueue.main.async {
+                    self.isConnected = false
+                }
             }
 
             semaphore.signal()
