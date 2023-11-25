@@ -33,7 +33,7 @@ public extension NSAPIError {
                 return
             }
             LogManager.dispachLog("Erro desconhecido, tente novamente mais tarte \(Self.self) \(#function)")
-            callback(.unknowError())
+            callback(.unknowError(error.localizedDescription))
         }
     }
 }
