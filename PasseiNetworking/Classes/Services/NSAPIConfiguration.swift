@@ -8,35 +8,42 @@
 import Foundation
 
 protocol NSAPIConfigurationSessionDelegate {
-    var configurationSession:URLSessionConfiguration { get }
+    var configurationSession: URLSessionConfiguration { get }
     func checkWaitingForConnectivity(withURL url: URL?)
 }
 
 /// Essa classe é o start da aplicação e contem as configurações iniciais
 public final class NSAPIConfiguration {
-    public static var shared:NSAPIConfiguration = NSAPIConfiguration()
     
-    var delegate: NSAPIConfigurationSessionDelegate?
+    public static var shared: NSAPIConfiguration = NSAPIConfiguration()
     
-    private init() { }
+    public var apiKey:String? = nil
     
-    var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
+    internal var delegate: NSAPIConfigurationSessionDelegate?
     
-    var apiConnection: NSAPIURLSession {
-        return NSAPIURLSession(delegate: self)
-    }
+    internal var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
     
     private(set) var baseUrl = ""
     
-    public func setBaseUrl(_ url:String) {
-        self.baseUrl = url
-    }
-    
     private(set) var port:Int? = nil
     
-    public func setPort(_ port:Int) {
-        self.port = port
+    internal var apiConnection: NSAPIURLSession {
+        return NSAPIURLSession(delegate: self)
     }
+    
+    public func application(
+        _ baseURL: String,
+        _ port: Int? = nil,
+        _ apiKey: String? = nil) {
+            
+        self.baseUrl = baseURL
+        self.port = port
+        self.apiKey = apiKey
+            
+    }
+    
+    private init() { }
+    
 }
 
 extension NSAPIConfiguration: NSURLSessionConnectivity {

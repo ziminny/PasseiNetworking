@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Vagner Oliveira on 03/06/23.
 //
@@ -10,24 +10,27 @@ import PasseiLogManager
 
 /// Responsável por fazer as requisições na API
 @available(iOS 13.0.0, *)
-final class NSAPIRequester {
+final internal class NSAPIRequester {
     
-    var interceptor:NSRequestInterceptor?
+    private  var isCancelableRequestGetRefreshToken: Bool = false;
     
-    var authorization:NSAuthorization?
+    private  var session: URLSession { configuration.apiConnection.session }
     
-    private var isCancelableRequestGetRefreshToken:Bool = false;
+    private  var port: Int? { configuration.port }
     
-    var configuration:NSAPIConfiguration { NSAPIConfiguration.shared }
+    private  var baseURL: String { configuration.baseUrl }
     
-    private var session:URLSession { configuration.apiConnection.session }
+    private  var apiKey: String? { configuration.apiKey }
     
-    private var port:Int? { configuration.port }
-    private var baseURL:String { configuration.baseUrl }
+    internal var interceptor: NSRequestInterceptor?
     
-    var baseURLInterceptor:NSCustomBaseURLInterceptor?
+    internal var authorization: NSAuthorization?
     
-    private func completeURL(withpath path:String) -> String {
+    internal var configuration: NSAPIConfiguration { NSAPIConfiguration.shared }
+    
+    internal var baseURLInterceptor: NSCustomBaseURLInterceptor?
+    
+    private func completeURL(withpath path: String) -> String {
         
         if let baseURLInterceptor {
             guard let port = baseURLInterceptor.port else {
@@ -43,7 +46,8 @@ final class NSAPIRequester {
         return "\(String(describing: self.baseURL))/\(path)"
     }
     
-    private func url(withPath path:String) throws -> URL {
+    private func url(withPath path: String) throws -> URL {
+        print("self.baseURL",self.completeURL(withpath: path))
         guard let url = URL(string: self.completeURL(withpath: path)) else {
             throw dispachError("error \(#function) url parser")
         }
@@ -51,60 +55,37 @@ final class NSAPIRequester {
         return url
     }
     
-    private func response(with urlResponse:URLResponse) throws -> HTTPURLResponse {
+    private func response(with urlResponse: URLResponse) throws -> HTTPURLResponse {
         guard let response = urlResponse as? HTTPURLResponse else {
             throw dispachError("error \(#function) urlResponse convert")
         }
         return response
     }
     
-    private func dispachError(_ message:String) -> NSAPIError {
+    private func dispachError(_ message: String) -> NSAPIError {
         LogManager.dispachLog(message)
         return NSAPIError.info(message)
     }
     
-    
-      func fetch<T:NSModel>(witHTTPResponse httpResponse:T.Type, andNSParameters nsParameters:NSParameters) async throws -> T {
+    internal func fetch<T: NSModel>(
+        witHTTPResponse httpResponse: T.Type,
+        andNSParameters nsParameters: NSParameters
+    ) async throws -> T {
         
-        switch nsParameters.method {
-        case .GET:
-            return try await self.get(witHTTPResponse:httpResponse,nsParameters: nsParameters)
-        default:
-            // POST, PUT or DELETE
-            return try await self.post(witHTTPResponse:httpResponse,nsParameters: nsParameters)
-        }
+        return try await self.send(witHTTPResponse:httpResponse,nsParameters: nsParameters)
+        
     }
     
-     func get<T:NSModel>(witHTTPResponse:T.Type,nsParameters:NSParameters) async throws -> T {
- 
-        let path = nsParameters.path.rawValue
-         let url = try self.url(withPath: path)
-        
-   
-        
-        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        
-        if !nsParameters.queryString.isEmpty {
-            let queryString = nsParameters.queryString
-            urlComponents?.queryItems = queryString.map({ URLQueryItem(name: $0, value: "\($1)") })
-        }
-        
-        guard let urlWithComponents = urlComponents?.url else {
-            throw dispachError("error \(#function) url parser")
-        }
-        
-        
-        var urlRequest = URLRequest(url: urlWithComponents)
-        
-        interceptor?.intercept(with: &urlRequest)
-        
-        urlRequest.httpMethod = nsParameters.method.rawValue
-        
-        
-        let (data,urlResponse) = try await session.data(for: urlRequest);
+    private func send<T: NSModel>(
+        witHTTPResponse:T.Type,
+        nsParameters: NSParameters
+    ) async throws -> T {
+
+        let (data,urlResponse) = try await self.makeRequest(nsParameters: nsParameters);
         
         let response = try self.response(with: urlResponse)
         
+        // Success response
         if 200..<299 ~= response.statusCode {
             let jsonDecoder = JSONDecoder()
             let result = try jsonDecoder.decode(T.self, from: data)
@@ -115,37 +96,31 @@ final class NSAPIRequester {
         if response.statusCode == 401 {
             
             guard let authorization else {
-                throw self.dispachError("error function \(#function) file implemented authorization provider")
+                throw self.dispachError("error function \(#function) file not implemented authorization provider")
             }
-            
             if !isCancelableRequestGetRefreshToken {
                 return try await authorization.refreshToken(completion:{ [unowned self] (nsModel, nsPrams) async throws in
-                         return try await self.refreshToken(witHTTPResponse: nsModel, nsParameters: nsPrams, lastCallReponse: witHTTPResponse, lastNSParameters: nsParameters)
-                 })
+                    return try await self.refreshToken(witHTTPResponse: nsModel, nsParameters: nsPrams, lastCallReponse: witHTTPResponse, lastNSParameters: nsParameters)
+                })
             }
-            
         }
         
         if response.statusCode == 500 {
             throw dispachError("server error \(#function) status code \(response.statusCode)")
         }
         
-         LogManager.dispachLog("error \(#function) status code \(response.statusCode)")
-         let jsonDecoder = JSONDecoder()
-         let resultError = try jsonDecoder.decode(NSAcknowledgedByAPI.self, from: data)
-         throw NSAPIError.acknowledgedByAPI(resultError)
+        let resultError = try self.throwsApiError(response: response, data: data)
+        throw NSAPIError.acknowledgedByAPI(resultError)
+        
     }
     
-    
-     func post<T:NSModel>(witHTTPResponse:T.Type,nsParameters:NSParameters) async throws -> T {
-       
+    private func makeRequest(nsParameters: NSParameters) async throws -> (Data, URLResponse) {
+        
         let path = nsParameters.path.rawValue
- 
+        
         let url = try self.url(withPath: path)
         
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
-         
-     
         
         if !nsParameters.queryString.isEmpty {
             let queryString = nsParameters.queryString
@@ -153,96 +128,40 @@ final class NSAPIRequester {
         }
         
         guard let urlWithComponents = urlComponents?.url else {
-            print("ERRO AQUI")
             throw dispachError("error \(#function) url parser")
-     
         }
         
-        
         var urlRequest = URLRequest(url: urlWithComponents)
+        
+        if let apiKey {
+            urlRequest.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        }
         
         interceptor?.intercept(with: &urlRequest)
         
         urlRequest.httpMethod = nsParameters.method.rawValue
         
-        
-        if let httpRequest = nsParameters.httpRequest {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(httpRequest)
-            urlRequest.httpBody = data
+        if nsParameters.method != .GET {
+            if let httpRequest = nsParameters.httpRequest {
+                let encoder = JSONEncoder()
+                let data = try encoder.encode(httpRequest)
+                urlRequest.httpBody = data
+            }
         }
         
-        let (data,urlResponse) = try await session.data(for: urlRequest);
-        
-        let response = try self.response(with: urlResponse)
-        
-        // Success response
-        if 200..<299 ~= response.statusCode {
-            let jsonDecoder = JSONDecoder()
-            
-            let result = try jsonDecoder.decode(T.self, from: data)
-            return result
-        }
-        
-         // Expired token
-         if response.statusCode == 401 {
-             
-             guard let authorization else {
-                 throw self.dispachError("error function \(#function) file not implemented authorization provider")
-             }
-             if !isCancelableRequestGetRefreshToken {
-                 return try await authorization.refreshToken(completion:{ [unowned self] (nsModel, nsPrams) async throws in
-                          return try await self.refreshToken(witHTTPResponse: nsModel, nsParameters: nsPrams, lastCallReponse: witHTTPResponse, lastNSParameters: nsParameters)
-                  })
-             }
-         }
-        
-        if response.statusCode == 500 {
-            throw dispachError("server error \(#function) status code \(response.statusCode)")
-        }
-         
-         LogManager.dispachLog("error \(#function) status code \(response.statusCode)")
-         let jsonDecoder = JSONDecoder()
-         let resultError = try jsonDecoder.decode(NSAcknowledgedByAPI.self, from: data)
-         throw NSAPIError.acknowledgedByAPI(resultError)
+        return try await session.data(for: urlRequest);
     }
     
-    func refreshToken<T:NSModel,S:NSModel>(witHTTPResponse:T.Type,nsParameters:NSParameters,lastCallReponse:S.Type,lastNSParameters:NSParameters) async throws  -> S {
- 
+    private func refreshToken<T: NSModel,S: NSModel>(
+        witHTTPResponse: T.Type,
+        nsParameters: NSParameters,
+        lastCallReponse: S.Type,
+        lastNSParameters: NSParameters
+    ) async throws  -> S {
+        
         isCancelableRequestGetRefreshToken = true
         
-        let path = nsParameters.path.rawValue
- 
-        let url = try self.url(withPath: path)
-        
-        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        
-        if !nsParameters.queryString.isEmpty {
-            let queryString = nsParameters.queryString
-            urlComponents?.queryItems = queryString.map({ URLQueryItem(name: $0, value: "\($1)") })
-        }
-        
-        guard let urlWithComponents = urlComponents?.url else {
-            throw dispachError("error \(#function) url parser")
-     
-        }
-        
-        
-        var urlRequest = URLRequest(url: urlWithComponents)
-        
-        interceptor?.intercept(with: &urlRequest)
-        
-        urlRequest.httpMethod = nsParameters.method.rawValue
-        
-        
-        if let httpRequest = nsParameters.httpRequest {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(httpRequest)
-            urlRequest.httpBody = data
-        }
-        
-        
-        let (data,urlResponse) = try await session.data(for: urlRequest);
+        let (data,urlResponse) = try await self.makeRequest(nsParameters: lastNSParameters);
         
         let response = try self.response(with: urlResponse)
         
@@ -254,12 +173,16 @@ final class NSAPIRequester {
         if response.statusCode == 500 {
             throw dispachError("server error \(#function) status code \(response.statusCode)")
         }
-       
+
+        let resultError = try self.throwsApiError(response: response, data: data)
+        throw NSAPIError.acknowledgedByAPI(resultError)
+        
+    }
+    
+    private func throwsApiError(response: HTTPURLResponse, data:Data) throws -> NSAcknowledgedByAPI {
         debugPrint("STATUS CODE REFRESH TOKEN ERROR",response.statusCode)
         LogManager.dispachLog("error \(#function) status code \(response.statusCode)")
         let jsonDecoder = JSONDecoder()
-        let resultError = try jsonDecoder.decode(NSAcknowledgedByAPI.self, from: data)
-        throw NSAPIError.acknowledgedByAPI(resultError)
-        
+        return try jsonDecoder.decode(NSAcknowledgedByAPI.self, from: data)
     }
 }
