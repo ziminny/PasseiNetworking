@@ -127,7 +127,7 @@ final internal class NSAPIRequester {
         
         if !nsParameters.queryString.isEmpty {
             let queryString = nsParameters.queryString
-            urlComponents?.queryItems = queryString.map({ URLQueryItem(name: $0, value: "\($1)") })
+            urlComponents?.queryItems = queryString.map({ URLQueryItem(name: $0.rawValue, value: "\($1)") })
         }
         
         guard let urlWithComponents = urlComponents?.url else {
