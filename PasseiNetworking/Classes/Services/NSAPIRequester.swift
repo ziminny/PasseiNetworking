@@ -47,7 +47,6 @@ final internal class NSAPIRequester {
     }
     
     private func url(withPath path: String) throws -> URL {
-        print("self.baseURL",self.completeURL(withpath: path))
         guard let url = URL(string: self.completeURL(withpath: path)) else {
             throw dispachError("error \(#function) url parser")
         }
@@ -116,7 +115,11 @@ final internal class NSAPIRequester {
     
     private func makeRequest(nsParameters: NSParameters) async throws -> (Data, URLResponse) {
         
-        let path = nsParameters.path.rawValue
+        var path = nsParameters.path.rawValue
+        
+        if let param = nsParameters.param {
+            path = "\(path)/\(param)"
+        }
         
         let url = try self.url(withPath: path)
         

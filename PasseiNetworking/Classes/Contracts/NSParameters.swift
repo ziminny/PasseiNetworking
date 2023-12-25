@@ -18,12 +18,14 @@ public struct NSParameters {
     public let httpRequest:NSModel?
     public let path:NSRawValue
     public var queryString :[String:Any] = [:]
+    public var param:Any?
     
-    public init(method: NSHTTPMethod = .GET, httpRequest: NSModel? = nil, path: NSRawValue, queryString: [String : Any] = [:]) {
+    public init(method: NSHTTPMethod = .GET, httpRequest: NSModel? = nil, path: NSRawValue, queryString: [String : Any] = [:],param: Any? = nil) {
         self.method = method
         self.httpRequest = (method == .GET) ? nil : httpRequest
         self.path = path
         self.queryString = queryString
+        self.param = param
     }
     
 }
