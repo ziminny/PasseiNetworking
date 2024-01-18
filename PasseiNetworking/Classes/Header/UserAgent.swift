@@ -6,16 +6,20 @@
 //
 
 import Foundation
+#if os(iOS)
 import UIKit
+#endif
 
-struct UserAgent:HTTPHeaderProtocol {
+struct UserAgent: HTTPHeaderProtocol {
 
     typealias ValueType = String
     
     static var headerKey: HTTPHeaderConfiguration.Keys { .userAgent }
     static var headerValue: ValueType {
         
-        var userAgentString:String = ""
+#if os(iOS)
+        
+        var userAgentString: String = ""
 
         if let infoPlist = try? PListFile<InfoPlist>(),
            let appName = infoPlist.data.bundleName,
@@ -33,6 +37,9 @@ struct UserAgent:HTTPHeaderProtocol {
        }
 
         return userAgentString
+        #endif
+        
+        return "MacOS"
     }
     
     
