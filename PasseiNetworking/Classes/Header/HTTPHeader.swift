@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import UIKit
 
-struct HTTPHeader:Decodable {
+struct HTTPHeader: Decodable {
     
-    static var headerDict:[String:Any] = {
+    static var headerDict: [String:Any] = {
         
         var header:[String:Any] = [:]
         header[UserAgent.headerKey.rawValue] = UserAgent.headerValue
