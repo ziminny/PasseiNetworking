@@ -8,31 +8,31 @@
 import Foundation
 
 /// Protocolo para uma fábrica de serviços HTTP.
-public protocol NSHTTPServiceFactoryProtocol {
+public protocol NSServiceFactoryProtocol {
     /// Instância do serviço HTTP.
-    var service: NSAPIService { get }
-}
-
-/// Protocolo para uma fábrica de serviços HTTP.
-public protocol NSProxyPServiceFactoryProtocol {
-    /// Instância do serviço HTTP.
-    var socket: Any { get }
+    var httpService: NSAPIService { get }
+    /// Instância do serviço de Socket.
+    var socketService: NSSocketService { get }
 }
 
 /// Implementação padrão da fábrica de serviços HTTP.
-public class NSHTTPServiceFactory: NSHTTPServiceFactoryProtocol {
+public class NSHTTPServiceFactory: NSServiceFactoryProtocol {
     
     /// Inicializador padrão.
     public init() {}
     
-    /// Retorna uma instância do serviço HTTP.
-    public var service: NSAPIService {
+    private lazy var lazyHTTPService: NSAPIService = {
         return NSAPIService()
-    }
-
-    /// Retorna uma instância do serviço de .
-    public var socket: Any {
-        return "Implemet"
-    }
+    }()
+    
+    private lazy var lazySocketService: NSSocketService = {
+        return NSSocketService()
+    }()
+    
+    /// Retorna uma instância do serviço NSAPIService.
+    public var httpService: NSAPIService { lazyHTTPService }
+    
+    /// Retorna uma instância do serviço de NSSocketService.
+    public var socketService: NSSocketService { lazySocketService }
 }
 
