@@ -28,10 +28,10 @@ public final class NSAPIConfiguration {
     public var apiKey: String? = nil
     
     /// Delegado para a configuração da sessão de URL da API.
-    internal var delegate: NSAPIConfigurationSessionDelegate?
+   // internal var delegate: NSAPIConfigurationSessionDelegate?
     
     /// Configuração da sessão de URL utilizada pela API.
-    internal var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
+   // internal var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
     
     /// URL base da API.
     private(set) var baseUrl = ""
@@ -40,9 +40,9 @@ public final class NSAPIConfiguration {
     private(set) var port: Int? = nil
     
     /// Instância de conexão com a API através da sessão de URL configurada.
-    internal var apiConnection: NSAPIURLSession {
-        return NSAPIURLSession(delegate: self)
-    }
+    //internal var apiConnection: NSAPIURLSession {
+     //   return NSAPIURLSession(delegate: self)
+   // }
     
     /// Método para configurar a aplicação com a URL base, porta e chave de API.
     ///
@@ -62,19 +62,19 @@ public final class NSAPIConfiguration {
     }
     
     /// Método de inicialização privado.
-    private init() { }
+    // private init() { }
     
 }
 
 /// Extensão que implementa o protocolo `NSURLSessionConnectivity` para a configuração da API.
-extension NSAPIConfiguration: NSURLSessionConnectivity {
+//extension NSAPIConfiguration {
     /// Método para verificar a espera pela conectividade antes de realizar uma solicitação.
     ///
     /// - Parameter url: A URL para a qual a conectividade será verificada.
-    func checkWaitingForConnectivity(withURL url: URL?) {
-        delegate?.checkWaitingForConnectivity(withURL: url)
-    }
-}
+   // func checkWaitingForConnectivity(withURL url: URL?) {
+        //delegate?.checkWaitingForConnectivity(withURL: url)
+   // }
+//}
 
 
 

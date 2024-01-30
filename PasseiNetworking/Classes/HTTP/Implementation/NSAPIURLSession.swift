@@ -41,7 +41,7 @@ public class NSAPIURLSession: NSObject, URLSessionTaskDelegate, URLSessionDelega
     
     /// Função chamada quando uma tarefa está esperando por conectividade.
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        delegate.checkWaitingForConnectivity(withURL: task.response?.url)
+        delegate.checkWaitingForConnectivity(withURL: task.response?.url) 
         
         // Cancela a tarefa se não estiver em segundo plano
         if delegate.configurationSession == .noBackgroundTask {

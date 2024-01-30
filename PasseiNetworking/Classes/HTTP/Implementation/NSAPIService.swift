@@ -34,7 +34,7 @@ public class NSAPIService {
     public var delegate: NSAPIServiceDelegate?
     
     public init() { 
-        apiRequester.configuration.delegate = self
+        apiRequester.delegate = self
     }
     
     @discardableResult

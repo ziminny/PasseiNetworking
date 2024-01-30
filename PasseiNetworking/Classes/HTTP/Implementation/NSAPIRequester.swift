@@ -8,14 +8,29 @@
 import Foundation
 import PasseiLogManager
 
+extension  NSAPIRequester: NSURLSessionConnectivity  {
+    
+    var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
+    
+    func checkWaitingForConnectivity(withURL url: URL?) {
+        delegate?.checkWaitingForConnectivity(withURL: url)
+    }
+    
+}
+
 /// Responsável por fazer as requisições na API
 @available(iOS 13.0.0, *)
 final internal class NSAPIRequester {
     
+    internal var delegate: NSAPIConfigurationSessionDelegate?
+    
     private var isCancelableRequestGetRefreshToken: Bool = false
 
     /// Sessão para realizar as requisições.
-    private var session: URLSession { configuration.apiConnection.session }
+    private var session: URLSession {
+        let urlSession = NSAPIURLSession(delegate: self) /*configuration.apiConnection.session */
+        return urlSession.session
+    }
 
     /// Porta para conexão à API (pode ser nula).
     private var port: Int? { configuration.port }
