@@ -14,4 +14,5 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '13.0'
   s.source_files          = 'PasseiNetworking/Classes/**/*' 
   s.dependency 'PasseiLogManager'
+  s.dependency 'Socket.IO-Client-Swift'
   end
