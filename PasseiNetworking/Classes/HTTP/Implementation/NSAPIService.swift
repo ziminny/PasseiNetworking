@@ -8,6 +8,7 @@
 import Foundation
 import PasseiLogManager
 import Network
+import Combine
 
 /// Um protocolo que define as propriedades e métodos necessários para a configuração e manipulação de serviços de API.
 public protocol NSAPIServiceDelegate {
@@ -74,18 +75,39 @@ public class NSAPIService {
     ///
     ///     }
     ///     ```
-    public func fetchAsync<T:NSModel>(_ httpResponse:T.Type, nsParameters:NSParameters) async throws -> T? {
+    public func fetchAsync<T: NSModel>(_ httpResponse:T.Type, nsParameters:NSParameters) async throws -> T? {
         
         try self.breakRequestIfNotBakgroundTask()
         
         return try await apiRequester.fetch(
-                witHTTPResponse:httpResponse,
-                andNSParameters:nsParameters
+                witHTTPResponse: httpResponse,
+                andNSParameters: nsParameters
             )
     }
     
+    public func publisher<T: NSModel>(_ httpResponse: T.Type, nsParameters: NSParameters) -> Future<T?,Error> {
+        
+        return Future<T?,Error> { promise in
+            Task {
+                do {
+                    
+                    try self.breakRequestIfNotBakgroundTask()
+                    
+                    let model = try await self.apiRequester.fetch(
+                        witHTTPResponse: httpResponse,
+                        andNSParameters: nsParameters
+                    )
+                    
+                    promise(.success(model))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+    }
+    
     @discardableResult
-    public func setNSParamns(withParameters nsParameters:NSParameters) -> Self {
+    public func setNSParamns(withParameters nsParameters: NSParameters) -> Self {
         self.nsParameters = nsParameters
         return self
     }
@@ -110,7 +132,7 @@ public class NSAPIService {
     ///      }
     ///     ```
     @discardableResult
-    public func fetch<T:NSModel>(_ httpResponse:T.Type,closure: @escaping (Result<T,Error>) -> Void ) -> Task<Void, Error> {
+    public func fetch<T: NSModel>(_ httpResponse: T.Type,closure: @escaping (Result<T,Error>) -> Void ) -> Task<Void, Error> {
         
           Task {
         
@@ -123,8 +145,8 @@ public class NSAPIService {
                 }
                 
                 let response = try await apiRequester.fetch(
-                        witHTTPResponse:httpResponse,
-                        andNSParameters:nsParameters
+                        witHTTPResponse: httpResponse,
+                        andNSParameters: nsParameters
                     )
                 closure(.success(response))
             } catch {
