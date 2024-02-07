@@ -12,7 +12,7 @@ public protocol NSServiceFactoryProtocol {
     /// Instância do serviço HTTP.
     var httpService: NSAPIService { get }
     /// Instância do serviço de Socket.
-    var socketService: NSSocketService { get }
+    var socketService: NSSocketManager { get }
 }
 
 /// Implementação padrão da fábrica de serviços HTTP.
@@ -25,14 +25,14 @@ public class NSHTTPServiceFactory: NSServiceFactoryProtocol {
         return NSAPIService()
     }()
     
-    private lazy var lazySocketService: NSSocketService = {
-        return NSSocketService()
+    private lazy var lazySocketService: NSSocketManager = {
+        return NSSocketManager.shared
     }()
     
     /// Retorna uma instância do serviço NSAPIService.
     public var httpService: NSAPIService { lazyHTTPService }
     
-    /// Retorna uma instância do serviço de NSSocketService.
-    public var socketService: NSSocketService { lazySocketService }
+    /// Retorna uma instância do serviço de NSSocketManager.
+    public var socketService: NSSocketManager { lazySocketService }
 }
 
