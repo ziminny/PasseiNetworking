@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NSSocketObjectMapper {
+public protocol NSSocketObjectMapper {
     
     associatedtype Representation: NSModel
     
