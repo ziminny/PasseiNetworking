@@ -64,28 +64,30 @@ public class NSSocketManager: NSObject {
         }
     }
     
-    public func received<T>(eventName: Notification.Name.NSSocketProviderName, of type: T.Type, completion: @escaping (T?) -> Void)  {
+    public func received(eventName: Notification.Name.NSSocketProviderName, completion: @escaping (Any?) -> Void)  {
         
         let enumResult = enumResult(eventName: eventName)
         
         self.socket.on(enumResult) { (data, act) in
-            if let data = data as? [T], let result = data.first {
+            
+            if let result = data.first  {
                 completion(result)
             } else {
                 completion(nil)
             }
+             
         }
         
     }
     
     @discardableResult
-    public func receivedPublisher<T>(eventsName: [Notification.Name.NSSocketProviderName: T.Type]) -> Self  {
+    public func receivedPublisher(eventsName: [Notification.Name.NSSocketProviderName]) -> Self  {
       
-        for (key, type) in eventsName {
+        for name in eventsName {
             
-            let enumResult = enumResult(eventName: key)
+            let enumResult = enumResult(eventName: name)
             
-            self.received(eventName: key, of: type) { result in
+            self.received(eventName: name) { result in
                 if let result {
                     NotificationCenter.default.post(name: Notification.Name(enumResult), object: result)
                 }
