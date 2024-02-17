@@ -15,7 +15,7 @@ public class NSSocketManager: NSObject {
     public static let shared = NSSocketManager()
     
     private var manager: SocketManager?
-    private var socket: SocketIOClient!
+    private var socket: SocketIOClient?
     
     /// Configura as informações do socket.
     ///
@@ -56,7 +56,7 @@ public class NSSocketManager: NSObject {
             let encoder = JSONEncoder()
             let data = try encoder.encode(message)
             
-            socket.emit(eventName.rawValue, data) {
+            socket?.emit(eventName.rawValue, data) {
                 completion(nil)
             }
              
@@ -91,7 +91,7 @@ public class NSSocketManager: NSObject {
         
         let enumResult = enumResult(eventName: eventName)
         
-        self.socket.on(enumResult) { (data, act) in
+        socket?.on(enumResult) { (data, act) in
             
             if let result = data.first  {
                 completion(result)
@@ -114,7 +114,7 @@ public class NSSocketManager: NSObject {
             
             let enumResult = enumResult(eventName: name)
             
-            self.received(eventName: name) { result in
+            received(eventName: name) { result in
                 if let result {
                     NotificationCenter.default.post(name: Notification.Name(enumResult), object: result)
                 }
@@ -128,14 +128,15 @@ public class NSSocketManager: NSObject {
     /// - Returns: Retorna uma instância de NSSocketManager conectada.
     @discardableResult
     public func connect() -> Self {
-        socket.connect()
+        socket?.connect()
         print("Connected to Socket!")
         return self
     }
     
     /// Desconecta do servidor de socket.
     public func disconnect() {
-        socket.disconnect()
+        socket?.disconnect()
+        socket = nil
         print("Disconnected from Socket!")
     }
       
