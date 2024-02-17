@@ -8,14 +8,20 @@
 import Foundation
 import SocketIO
 
+/// NSSocketManager é uma classe para gerenciar conexões de socket usando Socket.IO.
 public class NSSocketManager: NSObject {
     
+    /// Uma instância compartilhada de NSSocketManager.
     public static let shared = NSSocketManager()
     
     private var manager: SocketManager?
-    
     private var socket: SocketIOClient!
     
+    /// Configura as informações do socket.
+    ///
+    /// - Parameter configuration: A configuração do socket.
+    /// - Returns: Retorna uma instância de NSSocketManager configurada.
+    @discardableResult
     public func setConfiguration(_ configuration: NSSocketConfiguration) -> Self? {
         
         var completeURL: String = configuration.url
@@ -38,6 +44,12 @@ public class NSSocketManager: NSObject {
        
     }
     
+    /// Envia uma mensagem para o servidor.
+    ///
+    /// - Parameters:
+    ///   - eventName: O nome do evento.
+    ///   - message: A mensagem a ser enviada (deve ser Encodable).
+    ///   - completion: Uma closure chamada após a conclusão do envio.
     public func emit<T: Encodable>(eventName: NSSocketEmit, withMessage message: T, completion: @escaping (Error?) -> Void){
         
         do {
@@ -54,6 +66,11 @@ public class NSSocketManager: NSObject {
         
     }
     
+    /// Processa eventos recebidos do servidor.
+    ///
+    /// - Parameters:
+    ///   - eventName: O nome do evento recebido.
+    ///   - completion: Uma closure chamada quando um evento é recebido.
     private func enumResult(eventName: Notification.Name.NSSocketProviderName) -> String {
           
         switch eventName {
@@ -64,6 +81,12 @@ public class NSSocketManager: NSObject {
         }
     }
     
+    /// Processa eventos recebidos do servidor.
+    ///
+    /// - Parameters:
+    ///   - eventName: O nome do evento recebido.
+    ///   - completion: Uma closure chamada quando um evento é recebido.
+
     public func received(eventName: Notification.Name.NSSocketProviderName, completion: @escaping (Any?) -> Void)  {
         
         let enumResult = enumResult(eventName: eventName)
@@ -80,7 +103,11 @@ public class NSSocketManager: NSObject {
         
     }
     
-    @discardableResult
+    /// Registra observadores para eventos especificados e publica notificações quando esses eventos são recebidos.
+      ///
+      /// - Parameter eventsName: Os nomes dos eventos a serem registrados.
+      /// - Returns: Retorna uma instância de NSSocketManager com os observadores registrados.
+      @discardableResult
     public func receivedPublisher(eventsName: [Notification.Name.NSSocketProviderName]) -> Self  {
       
         for name in eventsName {
@@ -96,13 +123,17 @@ public class NSSocketManager: NSObject {
         return self
     }
     
-    
+    /// Conecta ao servidor de socket.
+    ///
+    /// - Returns: Retorna uma instância de NSSocketManager conectada.
+    @discardableResult
     public func connect() -> Self {
         socket.connect()
         print("Connected to Socket!")
         return self
     }
     
+    /// Desconecta do servidor de socket.
     public func disconnect() {
         socket.disconnect()
         print("Disconnected from Socket!")
