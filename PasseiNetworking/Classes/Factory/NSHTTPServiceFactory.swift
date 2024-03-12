@@ -21,18 +21,10 @@ public class NSHTTPServiceFactory: NSServiceFactoryProtocol {
     /// Inicializador padrão.
     public init() {}
     
-    private lazy var lazyHTTPService: NSAPIService = {
-        return NSAPIService()
-    }()
-    
-    private lazy var lazySocketService: NSSocketManager = {
-        return NSSocketManager.shared
-    }()
-    
     /// Retorna uma instância do serviço NSAPIService.
-    public var httpService: NSAPIService { lazyHTTPService }
+    public var httpService: NSAPIService { NSAPIService() }
     
     /// Retorna uma instância do serviço de NSSocketManager.
-    public var socketService: NSSocketManager { lazySocketService }
+    public var socketService: NSSocketManager { NSSocketManager.shared }
 }
 
