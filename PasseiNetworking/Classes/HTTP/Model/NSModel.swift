@@ -14,7 +14,7 @@ import Foundation
 ///      ```
 #if os(macOS)
 // Aqui ate poderia ser um typealias, mas futuramente podemos adicionar mais coisas aqui
-public protocol NSModel: Codable, NSSecureCoding where Self: NSObject { }
+public typealias NSModel = Codable & NSSecureCoding & NSObject  
 #else
     public protocol NSModel where Self: Decodable & Encodable { }
 #endif
