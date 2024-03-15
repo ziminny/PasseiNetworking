@@ -181,7 +181,6 @@ final internal class NSAPIRequester {
         throw NSAPIError.acknowledgedByAPI(resultError)
     }
 
-    
     /// Gera um objeto `NSAcknowledgedByAPI` a partir da resposta e dados fornecidos pela API.
     /// - Parameters:
     ///   - response: A resposta HTTP da API.

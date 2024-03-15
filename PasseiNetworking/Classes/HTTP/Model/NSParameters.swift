@@ -14,18 +14,32 @@ import Foundation
 ///    - queryString:  A queryString da requisição após o path por exemplo a base url é htttp://minhautl.com.br/carros?tipo=sedan, neste caso o path seria tipo=sedan
 public struct NSParameters {
     
+    #if os(macOS)
+    public typealias Model = Codable
+    #else
+    public typealias Model = NSModel
+    #endif
+    
     public var method: NSHTTPMethod = .GET
-    public let httpRequest: NSModel?
+    public let httpRequest: Model?
     public let path: NSRawValue
     public var queryString: [ NSQueryString : Any ] = [:]
     public var param: Any?
     
-    public init(method: NSHTTPMethod = .GET, httpRequest: NSModel? = nil, path: NSRawValue, queryString: [NSQueryString : Any] = [:],param: Any? = nil) {
+    public init(
+        method: NSHTTPMethod = .GET,
+        httpRequest: Model? = nil,
+        path: NSRawValue,
+        queryString: [NSQueryString : Any] = [:],
+        param: Any? = nil
+    ) {
+            
         self.method = method
         self.httpRequest = (method == .GET) ? nil : httpRequest
         self.path = path
         self.queryString = queryString
         self.param = param
+            
     }
     
 }

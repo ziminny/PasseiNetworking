@@ -7,7 +7,21 @@
 
 import SwiftUI
 
+#if os(macOS)
+/// Modelo vazio que herda de NSModel.
+public class NSEmptyModel: NSObject, NSModel {
+    
+    public static var supportsSecureCoding: Bool { true }
+    
+    public func encode(with coder: NSCoder) { }
+    
+    public required init?(coder: NSCoder) { }
+    
+}
+#else
 /// Modelo vazio que herda de NSModel.
 public class NSEmptyModel: NSModel {
     // Implementação do modelo vazio. Pode ser estendido conforme necessário por padrao vem {}.
 }
+#endif
+
