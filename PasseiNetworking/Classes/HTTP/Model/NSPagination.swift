@@ -1,5 +1,5 @@
 //
-//  Lang.swift
+//  NSPagination.swift
 //  PasseiOAB
 //
 //  Created by Vagner Oliveira on 25/12/23.
@@ -10,7 +10,7 @@ import Foundation
 #if os(macOS)
 /// Modelo que representa metadados para paginação.
 @objc(NSMetadata)
-public class NSMetadata: NSObject, NSModel {
+public class NSMetadata: NSModel {
     
     public static var supportsSecureCoding: Bool { true }
     
@@ -54,7 +54,7 @@ public class NSMetadata: NSObject, NSModel {
 
 /// Modelo que representa links para diferentes páginas.
 @objc(NSLinks)
-public class NSLinks: NSObject, NSModel {
+public class NSLinks: NSModel {
     
     public static var supportsSecureCoding: Bool { true }
     
@@ -98,7 +98,7 @@ public class NSLinks: NSObject, NSModel {
 }
 
 /// Modelo que representa dados paginados.
-public class NSPagination<T: NSObject & NSModel>: NSObject, NSModel {
+public class NSPagination<T: NSObject & NSModel>: NSModel {
     
     public static var supportsSecureCoding: Bool { true }
     

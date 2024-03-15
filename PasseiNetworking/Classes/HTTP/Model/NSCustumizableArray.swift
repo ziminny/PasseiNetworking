@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class NSCustumizableArray<T: NSModel>: NSObject, NSModel where T: NSObject  {
+open class NSCustumizableArray<T: NSModel>: NSModel where T: NSModel  {
     
     public static var supportsSecureCoding: Bool { true }
     

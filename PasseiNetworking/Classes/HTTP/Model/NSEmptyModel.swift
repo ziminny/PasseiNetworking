@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Vagner Oliveira on 11/06/23.
 //
@@ -9,7 +9,7 @@ import SwiftUI
 
 #if os(macOS)
 /// Modelo vazio que herda de NSModel.
-public class NSEmptyModel: NSObject, NSModel {
+public class NSEmptyModel: NSModel {
     
     public static var supportsSecureCoding: Bool { true }
     
