@@ -1,13 +1,14 @@
 //
-//  NSCustumizableArray.swift
+//  NSCustomizableArray.swift
 //  PasseiCRM
 //
 //  Created by Vagner Oliveira on 20/01/24.
 //
 
+#if os(macOS)
 import Foundation
 
-open class NSCustumizableArray<T: NSModel>: NSModel where T: NSModel  {
+open class NSCustomizableArray<T: NSModel>: NSModel where T: NSModel  {
     
     public static var supportsSecureCoding: Bool { true }
     
@@ -34,4 +35,5 @@ open class NSCustumizableArray<T: NSModel>: NSModel where T: NSModel  {
         return NSCustumizableArray(elements: array)
     }
 }
+#endif
 
