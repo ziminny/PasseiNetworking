@@ -31,8 +31,8 @@ open class NSCustomizableArray<T: NSModel>: NSModel where T: NSModel  {
         coder.encode(elements, forKey: "elements")
     }
     
-    static func make(fromArray array: [T]) -> NSCustumizableArray<T> {
-        return NSCustumizableArray(elements: array)
+    static func make(fromArray array: [T]) -> NSCustomizableArray<T> {
+        return NSCustomizableArray(elements: array)
     }
 }
 #endif
