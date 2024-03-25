@@ -8,7 +8,7 @@
 import Foundation
 import PasseiLogManager
 
-extension  NSAPIRequester: NSURLSessionConnectivity  {
+extension NSAPIRequester: NSURLSessionConnectivity  {
     
     var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
     
@@ -22,7 +22,7 @@ extension  NSAPIRequester: NSURLSessionConnectivity  {
 @available(iOS 13.0.0, *)
 final internal class NSAPIRequester {
     
-    internal var delegate: NSAPIConfigurationSessionDelegate?
+    internal weak var delegate: NSAPIConfigurationSessionDelegate?
     
     private var isCancelableRequestGetRefreshToken: Bool = false
 
@@ -35,18 +35,17 @@ final internal class NSAPIRequester {
     /// Interceptor para modificar a URL base das requisições.
     internal var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
-    private lazy var makeRequest: NSMakeRequest = {
-        
-        let urlSession = NSAPIURLSession(delegate: self)
+    private var makeRequest: NSMakeRequest {
         
         let request = NSMakeRequest(
-            apiURLSession: urlSession,
-            interceptor: self.interceptor,
-            baseURLInterceptor: self.baseURLInterceptor
+            delegate: self
         )
         
+        request.interceptor = interceptor
+        request.baseURLInterceptor = baseURLInterceptor
+        
         return request
-    }()
+    }
     
     /// Converte uma resposta `URLResponse` para um objeto `HTTPURLResponse`. Lança um erro se a conversão falhar.
     /// - Parameter urlResponse: A resposta da URL a ser convertida.
@@ -197,5 +196,6 @@ final internal class NSAPIRequester {
         let jsonDecoder = JSONDecoder()
         return try jsonDecoder.decode(NSAcknowledgedByAPI.self, from: data)
     }
+    
 
 }

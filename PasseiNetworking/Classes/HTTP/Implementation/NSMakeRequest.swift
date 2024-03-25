@@ -22,16 +22,14 @@ final internal class NSMakeRequest {
     /// Chave de API para autenticação (pode ser nula).
     private var apiKey: String? { configuration.apiKey }
     
-    private let apiURLSession: NSAPIURLSession
+    private let apiURLSession: NSAPIURLSession = .shared
     
-    private let interceptor: NSRequestInterceptor?
+    internal weak var interceptor: NSRequestInterceptor?
     
-    private let baseURLInterceptor: NSCustomBaseURLInterceptor?
+    internal weak var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
-    init(apiURLSession: NSAPIURLSession, interceptor: NSRequestInterceptor?, baseURLInterceptor: NSCustomBaseURLInterceptor?) {
-        self.apiURLSession = apiURLSession
-        self.interceptor = interceptor
-        self.baseURLInterceptor = baseURLInterceptor
+    init(delegate: NSURLSessionConnectivity) {
+        self.apiURLSession.delegate = delegate 
     }
     
     /// Gera um erro `NSAPIError` com uma mensagem e a registra no log.

@@ -8,7 +8,7 @@
 import Foundation
 
 /// Protocolo que define os requisitos para o delegado de sessão de configuração da API.
-protocol NSAPIConfigurationSessionDelegate {
+protocol NSAPIConfigurationSessionDelegate: AnyObject {
     /// Configuração da sessão de URL que será utilizada pela API.
     var configurationSession: URLSessionConfiguration { get }
     

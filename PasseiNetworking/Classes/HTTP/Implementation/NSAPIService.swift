@@ -11,7 +11,7 @@ import Network
 import Combine
 
 /// Um protocolo que define as propriedades e métodos necessários para a configuração e manipulação de serviços de API.
-public protocol NSAPIServiceDelegate {
+public protocol NSAPIServiceDelegate: AnyObject {
     
     /// A configuração de sessão URLSession a ser usada para os serviços de API.
     var configurationSession: URLSessionConfiguration { get }
@@ -32,7 +32,7 @@ public class NSAPIService {
     private var apiRequester: NSAPIRequester = NSAPIRequester()
     
     /// Ao criar no módulo solicitado um NSAPIService, caso queira verificar a disponibilidade da internet, entregar a responsabilidade desse delegate
-    public var delegate: NSAPIServiceDelegate?
+    public weak var delegate: NSAPIServiceDelegate?
     
     public init() { 
         apiRequester.delegate = self

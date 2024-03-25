@@ -9,7 +9,7 @@ import Foundation
 import Network
 
 /// Protocolo utilizado para comunicar que a conexão está sendo aguardada pela `NSAPIService`.
-protocol NSURLSessionConnectivity {
+protocol NSURLSessionConnectivity: AnyObject {
     /// Configuração de sessão URL para a conexão.
     var configurationSession: URLSessionConfiguration { get }
     
@@ -24,30 +24,36 @@ extension NSURLSessionConnectivity {
 }
 
 /// Classe que lida com a sessão URL para a NSAPI.
-public class NSAPIURLSession: NSObject, URLSessionTaskDelegate, URLSessionDelegate {
+internal class NSAPIURLSession: NSObject{
+    
+    internal static var shared = NSAPIURLSession()
     
     /// Delegado para comunicação de conectividade.
-    var delegate: NSURLSessionConnectivity
-    
-    /// Inicializa a classe com o delegado de conectividade.
-    init(delegate: NSURLSessionConnectivity) {
-        self.delegate = delegate
-    }
+    internal weak var delegate: NSURLSessionConnectivity?
 
     /// Sessão URL utilizada para as solicitações da NSAPI.
-    lazy var session: URLSession = {
-        return URLSession(configuration: delegate.configurationSession, delegate: self, delegateQueue: nil)
-    }()
+    internal var session: URLSession {
+        return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
+    }
+    
+    override internal init() {
+        super.init()
+    }
+
+}
+
+extension NSAPIURLSession: URLSessionTaskDelegate, URLSessionDelegate  {
     
     /// Função chamada quando uma tarefa está esperando por conectividade.
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        delegate.checkWaitingForConnectivity(withURL: task.response?.url) 
+        delegate?.checkWaitingForConnectivity(withURL: task.response?.url)
         
         // Cancela a tarefa se não estiver em segundo plano
-        if delegate.configurationSession == .noBackgroundTask {
+        if let configuration = delegate?.configurationSession, configuration == .noBackgroundTask {
             task.cancel()
         }
     }
+    
 }
 
 

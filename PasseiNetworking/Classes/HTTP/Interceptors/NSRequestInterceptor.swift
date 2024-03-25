@@ -7,7 +7,7 @@
 import Foundation
 
 /// Protocolo que define um interceptor de requisições.
-public protocol NSRequestInterceptor {
+public protocol NSRequestInterceptor: AnyObject {
     
     /// Intercepta o request.
     /// - Parâmetros:
