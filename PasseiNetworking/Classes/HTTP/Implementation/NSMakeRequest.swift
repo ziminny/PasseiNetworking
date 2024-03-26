@@ -28,8 +28,12 @@ final internal class NSMakeRequest {
     
     internal weak var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
+    private let privateQueue = DispatchQueue(label: "com.PasseiNetworking.NSMakeRequest")
+    
     init(delegate: NSURLSessionConnectivity) {
-        self.apiURLSession.delegate = delegate 
+        privateQueue.async {
+            self.apiURLSession.delegate = delegate 
+        }
     }
     
     /// Gera um erro `NSAPIError` com uma mensagem e a registra no log.

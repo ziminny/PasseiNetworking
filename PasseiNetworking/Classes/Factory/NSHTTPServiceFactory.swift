@@ -16,15 +16,15 @@ public protocol NSServiceFactoryProtocol {
 }
 
 /// Implementação padrão da fábrica de serviços HTTP.
-public class NSHTTPServiceFactory: NSServiceFactoryProtocol {
+public struct NSHTTPServiceFactory: NSServiceFactoryProtocol {
     
     /// Inicializador padrão.
     public init() {}
     
     /// Retorna uma instância do serviço NSAPIService.
-    public var httpService: NSAPIService { NSAPIService() }
+    public var httpService: NSAPIService = NSAPIService()
     
     /// Retorna uma instância do serviço de NSSocketManager.
-    public var socketService: NSSocketManager { NSSocketManager.shared }
+    public var socketService: NSSocketManager = NSSocketManager.shared
 }
 
