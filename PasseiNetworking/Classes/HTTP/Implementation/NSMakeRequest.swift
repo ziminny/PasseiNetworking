@@ -145,7 +145,7 @@ final internal class NSMakeRequest {
     }
     
     deinit {
-        print("Vagner DEINIT \(Self.self)")
+        print("N_S DEINIT \(Self.self)")
     }
     
 }

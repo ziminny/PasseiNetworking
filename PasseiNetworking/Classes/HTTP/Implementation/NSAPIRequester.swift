@@ -11,9 +11,7 @@ import PasseiLogManager
 extension NSAPIRequester: NSURLSessionConnectivity  {
     
     var configurationSession: URLSessionConfiguration {
-        return request.apiURLSession.privateQueue.sync {
-            return delegate?.configurationSession ?? .noBackgroundTask
-        }
+        return delegate?.configurationSession ?? .noBackgroundTask
     }
     
     func checkWaitingForConnectivity(withURL url: URL?) {
@@ -39,13 +37,15 @@ final internal class NSAPIRequester {
     /// Interceptor para modificar a URL base das requisições.
     internal var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
-    private let request = NSMakeRequest(apiURLSession: .shared)
     
     private var makeRequest: NSMakeRequest {
+        
+        let request = NSMakeRequest(apiURLSession: .shared)
         
         return request.apiURLSession.privateQueue.sync {
             request.interceptor = interceptor
             request.baseURLInterceptor = baseURLInterceptor
+            request.apiURLSession.delegate = self
             return request
         }
         
@@ -202,7 +202,7 @@ final internal class NSAPIRequester {
     }
     
     deinit {
-        print("Vagner DEINIT \(Self.self)")
+        print("N_S DEINIT \(Self.self)")
     }
     
 

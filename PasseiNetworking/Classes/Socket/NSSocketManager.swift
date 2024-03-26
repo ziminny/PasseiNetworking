@@ -39,7 +39,7 @@ public class NSSocketManager: NSObject {
         return self
     }
     
-    override init() {
+    override private init() {
         super.init()
        
     }

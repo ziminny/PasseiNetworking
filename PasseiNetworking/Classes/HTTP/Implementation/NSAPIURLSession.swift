@@ -33,16 +33,14 @@ internal class NSAPIURLSession: NSObject{
 
     /// Sessão URL utilizada para as solicitações da NSAPI.
     internal var session: URLSession {
-        return privateQueue.sync {
-            return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
-        }
+        return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
     }
     
-    internal var privateQueue = DispatchQueue(label: "com.passeiNetworking.delegate")
+    internal var privateQueue = DispatchQueue(label: "com.passeiNetworking.NSURLSessionConnectivity")
     
     override private init() {
         super.init()
-    }
+    } 
 
 }
 
@@ -50,9 +48,10 @@ extension NSAPIURLSession: URLSessionTaskDelegate, URLSessionDelegate  {
     
     /// Função chamada quando uma tarefa está esperando por conectividade.
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        delegate?.checkWaitingForConnectivity(withURL: task.response?.url)
-        
+        delegate?.checkWaitingForConnectivity(withURL: task.response?.url) 
         // Cancela a tarefa se não estiver em segundo plano
+        
+        print("Vagner Configuration \(delegate?.configurationSession)")
         if let configuration = delegate?.configurationSession, configuration == .noBackgroundTask {
             task.cancel()
         }

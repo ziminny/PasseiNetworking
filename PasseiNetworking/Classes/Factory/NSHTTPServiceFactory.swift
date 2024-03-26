@@ -8,16 +8,18 @@
 import Foundation
 
 /// Implementação padrão da fábrica de serviços HTTP.
-public struct NSHTTPServiceFactory {
+public class NSHTTPServiceFactory {
     
-    public static func makeHttpService() -> NSAPIService {
+    public init() {}
+    
+    public func makeHttpService() -> NSAPIService {
         let apiRequester = NSAPIRequester()
         let http = NSAPIService(apiRequester: apiRequester)
         return http
     }
     
-    public static func makeSocketService() -> NSSocketManager {
-        let socket = NSSocketManager()
+    public func makeSocketService() -> NSSocketManager {
+        let socket = NSSocketManager.shared
         return socket
     }
  
