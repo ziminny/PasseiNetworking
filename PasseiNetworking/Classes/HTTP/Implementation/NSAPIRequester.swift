@@ -10,7 +10,11 @@ import PasseiLogManager
 
 extension NSAPIRequester: NSURLSessionConnectivity  {
     
-    var configurationSession: URLSessionConfiguration { delegate?.configurationSession ?? .noBackgroundTask }
+    var configurationSession: URLSessionConfiguration {
+        return request.apiURLSession.privateQueue.sync {
+            return delegate?.configurationSession ?? .noBackgroundTask
+        }
+    }
     
     func checkWaitingForConnectivity(withURL url: URL?) {
         delegate?.checkWaitingForConnectivity(withURL: url)
@@ -35,16 +39,16 @@ final internal class NSAPIRequester {
     /// Interceptor para modificar a URL base das requisições.
     internal var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
+    private let request = NSMakeRequest(apiURLSession: .shared)
+    
     private var makeRequest: NSMakeRequest {
         
-        let request = NSMakeRequest(
-            delegate: self
-        )
+        return request.apiURLSession.privateQueue.sync {
+            request.interceptor = interceptor
+            request.baseURLInterceptor = baseURLInterceptor
+            return request
+        }
         
-        request.interceptor = interceptor
-        request.baseURLInterceptor = baseURLInterceptor
-        
-        return request
     }
     
     /// Converte uma resposta `URLResponse` para um objeto `HTTPURLResponse`. Lança um erro se a conversão falhar.
@@ -195,6 +199,10 @@ final internal class NSAPIRequester {
         // Decodifica os dados da resposta em um objeto NSAcknowledgedByAPI
         let jsonDecoder = JSONDecoder()
         return try jsonDecoder.decode(NSAcknowledgedByAPI.self, from: data)
+    }
+    
+    deinit {
+        print("Vagner DEINIT \(Self.self)")
     }
     
 

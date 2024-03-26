@@ -33,10 +33,14 @@ internal class NSAPIURLSession: NSObject{
 
     /// Sessão URL utilizada para as solicitações da NSAPI.
     internal var session: URLSession {
-        return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
+        return privateQueue.sync {
+            return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
+        }
     }
     
-    override internal init() {
+    internal var privateQueue = DispatchQueue(label: "com.passeiNetworking.delegate")
+    
+    override private init() {
         super.init()
     }
 

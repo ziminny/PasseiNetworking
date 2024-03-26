@@ -22,18 +22,14 @@ final internal class NSMakeRequest {
     /// Chave de API para autenticação (pode ser nula).
     private var apiKey: String? { configuration.apiKey }
     
-    private let apiURLSession: NSAPIURLSession = .shared
+    internal var apiURLSession: NSAPIURLSession
     
     internal weak var interceptor: NSRequestInterceptor?
     
     internal weak var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
-    private let privateQueue = DispatchQueue(label: "com.PasseiNetworking.NSMakeRequest")
-    
-    init(delegate: NSURLSessionConnectivity) {
-        privateQueue.async {
-            self.apiURLSession.delegate = delegate 
-        }
+    init(apiURLSession: NSAPIURLSession) {
+       self.apiURLSession = apiURLSession
     }
     
     /// Gera um erro `NSAPIError` com uma mensagem e a registra no log.
@@ -146,6 +142,10 @@ final internal class NSMakeRequest {
         
         // Envia a solicitação e aguarda os dados da resposta
         return try await apiURLSession.session.data(for: urlRequest)
+    }
+    
+    deinit {
+        print("Vagner DEINIT \(Self.self)")
     }
     
 }

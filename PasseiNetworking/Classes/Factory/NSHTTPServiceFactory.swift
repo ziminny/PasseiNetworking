@@ -7,24 +7,20 @@
 
 import Foundation
 
-/// Protocolo para uma fábrica de serviços HTTP.
-public protocol NSServiceFactoryProtocol {
-    /// Instância do serviço HTTP.
-    var httpService: NSAPIService { get }
-    /// Instância do serviço de Socket.
-    var socketService: NSSocketManager { get }
-}
-
 /// Implementação padrão da fábrica de serviços HTTP.
-public struct NSHTTPServiceFactory: NSServiceFactoryProtocol {
+public struct NSHTTPServiceFactory {
     
-    /// Inicializador padrão.
-    public init() {}
+    public static func makeHttpService() -> NSAPIService {
+        let apiRequester = NSAPIRequester()
+        let http = NSAPIService(apiRequester: apiRequester)
+        return http
+    }
     
-    /// Retorna uma instância do serviço NSAPIService.
-    public var httpService: NSAPIService = NSAPIService()
-    
-    /// Retorna uma instância do serviço de NSSocketManager.
-    public var socketService: NSSocketManager = NSSocketManager.shared
+    public static func makeSocketService() -> NSSocketManager {
+        let socket = NSSocketManager()
+        return socket
+    }
+ 
 }
+ 
 

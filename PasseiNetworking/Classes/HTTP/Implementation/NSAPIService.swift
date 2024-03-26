@@ -29,12 +29,13 @@ public class NSAPIService {
     private var nsParameters: NSParameters?
 
     /// O objeto responsável por realizar as solicitações de API.
-    private var apiRequester: NSAPIRequester = NSAPIRequester()
+    private let apiRequester: NSAPIRequester
     
     /// Ao criar no módulo solicitado um NSAPIService, caso queira verificar a disponibilidade da internet, entregar a responsabilidade desse delegate
     public weak var delegate: NSAPIServiceDelegate?
     
-    public init() { 
+    internal init(apiRequester: NSAPIRequester) {
+        self.apiRequester = apiRequester
         apiRequester.delegate = self
     }
     
@@ -165,6 +166,10 @@ public class NSAPIService {
             }
  
         }
+    }
+    
+    deinit {
+        print("Vagner DEINIT \(Self.self)")
     }
     
 }
