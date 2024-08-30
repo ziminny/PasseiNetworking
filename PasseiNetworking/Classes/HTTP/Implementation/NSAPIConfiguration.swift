@@ -39,6 +39,8 @@ public final class NSAPIConfiguration {
     /// Porta utilizada nas requisições (opcional).
     private(set) var port: Int? = nil
     
+    private(set) var language: NSLanguage = .enUS
+    
     /// Instância de conexão com a API através da sessão de URL configurada.
     //internal var apiConnection: NSAPIURLSession {
      //   return NSAPIURLSession(delegate: self)
@@ -53,11 +55,13 @@ public final class NSAPIConfiguration {
     public func application(
         _ baseURL: String,
         _ port: Int? = nil,
-        _ apiKey: String? = nil) {
+        _ apiKey: String? = nil,
+        _ language: NSLanguage = .enUS) {
             
         self.baseUrl = baseURL
         self.port = port
         self.apiKey = apiKey
+        self.language = language
             
     }
     

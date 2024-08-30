@@ -24,7 +24,7 @@ extension NSURLSessionConnectivity {
 }
 
 /// Classe que lida com a sessão URL para a NSAPI.
-internal class NSAPIURLSession: NSObject{
+internal class NSAPIURLSession: NSObject {
     
     internal static var shared = NSAPIURLSession()
     

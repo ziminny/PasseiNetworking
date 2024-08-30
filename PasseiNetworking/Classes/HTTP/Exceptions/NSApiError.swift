@@ -12,12 +12,12 @@ import PasseiLogManager
 ///    - statusCode: Código de erro da requisição
 ///    - message: A mensagem do erro
 public struct NSAcknowledgedByAPI:Codable {
-    public private(set) var statusCode:Int
-    public private(set) var message:String
+    public private(set) var statusCode: Int
+    public private(set) var message: String
 }
 
 /// Enumeração que representa os possíveis erros relacionados à API.
-public enum NSAPIError: Error {
+public enum NSAPIError: LocalizedError {
     /// Erro desconhecido.
     case unknownError(String? = nil)
     
@@ -29,6 +29,20 @@ public enum NSAPIError: Error {
     
     /// Sem conexão com a Internet.
     case noInternetConnection
+    
+    public var errorDescription: String? {
+        switch self {
+        case .unknownError(let message):
+            return message
+        case .info(let message):
+            return message
+        case .noInternetConnection:
+            return NSTranslate.shared.message(.noInternetConnection)
+        case .acknowledgedByAPI(let acknowledgedByAPI):
+            return acknowledgedByAPI.message
+        }
+    }
+    
 }
 
 public extension NSAPIError {
