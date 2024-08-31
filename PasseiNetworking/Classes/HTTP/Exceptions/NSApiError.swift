@@ -51,15 +51,14 @@ public extension NSAPIError {
     /// - Parameters:
     ///   - error: O erro a ser tratado.
     ///   - callback: Um bloco de conclusão chamado após o tratamento do erro.
-    static func otherError(withError error: Error, callback: @escaping (NSAPIError) -> Void) {
+    static func otherError(withError error: Error) -> NSAPIError {
         if let error = error as NSError? {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 LogManager.dispachLog("Erro de comunicação com a API \(Self.self) \(#function)")
-                callback(.noInternetConnection)
-                return
+                return .noInternetConnection
             }
             LogManager.dispachLog("Erro desconhecido, tente novamente mais tarde \(Self.self) \(#function)")
-            callback(.unknownError(error.localizedDescription))
+            return .unknownError(error.localizedDescription)
         }
     }
 }
