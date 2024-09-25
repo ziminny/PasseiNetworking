@@ -8,10 +8,11 @@
 import Foundation
 
 /// Estrutura que representa os cabeçalhos HTTP utilizados em requisições.
+@HTTPHeaderActor
 internal struct HTTPHeader: Decodable {
     
     /// Dicionário que contém os cabeçalhos HTTP padrão.
-    static var headerDict: [String: Any] = {
+    static let headerDict: [String: Any] = {
         
         // Inicializa o dicionário com cabeçalhos padrão.
         var header: [String: Any] = [:]
@@ -27,9 +28,13 @@ internal struct HTTPHeader: Decodable {
         
         // Adiciona o cabeçalho Lang ao dicionário.
         header[Lang.headerKey.rawValue] = Lang.headerValue
-
+        
         // Retorna o dicionário completo de cabeçalhos.
         return header
     }()
+}
+
+@globalActor actor HTTPHeaderActor {
+    static var shared: some Actor = HTTPHeaderActor()
 }
 

@@ -6,7 +6,7 @@
 //
 
 /// Enumeração que representa chaves possíveis para parâmetros de consulta (query string) em uma requisição.
-public enum NSQueryString: String {
+public enum NSQueryString: String, Sendable {
     
     /// Chave para especificar o número da página.
     case page = "page"

@@ -19,10 +19,10 @@ protocol NSAPIConfigurationSessionDelegate: AnyObject {
 }
 
 /// Classe que representa a configuração inicial da API.
-public final class NSAPIConfiguration {
+public struct NSAPIConfiguration: Sendable {
     
     /// Instância compartilhada da configuração da API.
-    public static var shared: NSAPIConfiguration = NSAPIConfiguration()
+    nonisolated(unsafe) public static var shared = NSAPIConfiguration()
     
     /// Chave de API utilizada nas requisições (opcional).
     public var apiKey: String? = nil
@@ -52,7 +52,7 @@ public final class NSAPIConfiguration {
     ///   - baseURL: A URL base da API.
     ///   - port: A porta utilizada nas requisições (opcional).
     ///   - apiKey: A chave de API utilizada nas requisições (opcional).
-    public func application(
+    public mutating func application(
         _ baseURL: String,
         _ port: Int? = nil,
         _ apiKey: String? = nil,

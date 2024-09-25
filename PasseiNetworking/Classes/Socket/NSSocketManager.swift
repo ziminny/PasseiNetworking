@@ -9,13 +9,15 @@ import Foundation
 import SocketIO
 
 /// NSSocketManager é uma classe para gerenciar conexões de socket usando Socket.IO.
-public class NSSocketManager: NSObject {
+public final class NSSocketManager: NSObject, Sendable {
     
     /// Uma instância compartilhada de NSSocketManager.
     public static let shared = NSSocketManager()
     
-    private var manager: SocketManager?
-    private var socket: SocketIOClient?
+    nonisolated(unsafe) private var manager: SocketManager?
+    nonisolated(unsafe) private var socket: SocketIOClient?
+    
+    nonisolated private let socketQueue = DispatchQueue(label: "com.passeiNetworking.socket")
     
     /// Configura as informações do socket.
     ///
@@ -34,8 +36,11 @@ public class NSSocketManager: NSObject {
             print("Erro ao pegar a url do socket")
             return nil
         }
-        manager = SocketManager(socketURL: url, config: [.log(true), .extraHeaders(["authorization": "Bearer \(configuration.token)"])])
-        socket = manager?.defaultSocket
+        socketQueue.sync(flags: .barrier) {
+            manager = SocketManager(socketURL: url, config: [.log(true), .extraHeaders(["authorization": "Bearer \(configuration.token)"])])
+            socket = manager?.defaultSocket
+        }
+
         return self
     }
     
@@ -56,8 +61,10 @@ public class NSSocketManager: NSObject {
             let encoder = JSONEncoder()
             let data = try encoder.encode(message)
             
-            socket?.emit(eventName.rawValue, data) {
-                completion(nil)
+            socketQueue.sync(flags: .barrier) {
+                socket?.emit(eventName.rawValue, data) {
+                    completion(nil)
+                }
             }
              
         } catch {
@@ -87,18 +94,20 @@ public class NSSocketManager: NSObject {
     ///   - eventName: O nome do evento recebido.
     ///   - completion: Uma closure chamada quando um evento é recebido.
 
-    public func received(eventName: Notification.Name.NSSocketProviderName, completion: @escaping (Any?) -> Void)  {
+    public func received(eventName: Notification.Name.NSSocketProviderName, completion: @Sendable @escaping (Any?) -> Void)  {
         
         let enumResult = enumResult(eventName: eventName)
         
-        socket?.on(enumResult) { (data, act) in
-            
-            if let result = data.first  {
-                completion(result)
-            } else {
-                completion(nil)
+        socketQueue.async  {
+            self.socket?.on(enumResult) { (data, act) in
+                
+                if let result = data.first  {
+                    completion(result)
+                } else {
+                    completion(nil)
+                }
+                
             }
-             
         }
         
     }
@@ -128,14 +137,18 @@ public class NSSocketManager: NSObject {
     /// - Returns: Retorna uma instância de NSSocketManager conectada.
     @discardableResult
     public func connect() -> Self {
-        socket?.connect()
+        socketQueue.sync(flags: .barrier) {
+            socket?.connect()
+        }
         print("Connected to Socket!")
         return self
     }
     
     /// Desconecta do servidor de socket.
     public func disconnect() {
-        socket?.disconnect()
+        socketQueue.sync(flags: .barrier) {
+            socket?.disconnect()
+        }
         socket = nil
         print("Disconnected from Socket!")
     }

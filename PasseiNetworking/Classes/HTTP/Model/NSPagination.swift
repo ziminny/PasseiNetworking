@@ -132,13 +132,13 @@ public class NSPagination<T: NSObject & NSModel>: NSModel {
 }
 #else
 /// Modelo que representa metadados para paginação.
-public class NSMetadata: NSModel {
+public struct NSMetadata: NSModel {
     
-    public var itemsPerPage: Int?
-    public var totalItems: Int?
-    public var currentPage: Int?
-    public var totalPages: Int?
-    public var sortBy: Array<Array<String>?>?
+    public let itemsPerPage: Int?
+    public let totalItems: Int?
+    public let currentPage: Int?
+    public let totalPages: Int?
+    public let sortBy: Array<Array<String>?>?
     
     /// Inicializador da classe NSMetadata.
     /// - Parameters:
@@ -158,13 +158,13 @@ public class NSMetadata: NSModel {
 }
 
 /// Modelo que representa links para diferentes páginas.
-public class NSLinks: NSModel {
+public final class NSLinks: NSModel {
     
-    public var first: String?
-    public var previous: String?
-    public var current: String?
-    public var next: String?
-    public var last: String?
+    public let first: String?
+    public let previous: String?
+    public let current: String?
+    public let next: String?
+    public let last: String?
     
     /// Inicializador da classe NSLinks.
     /// - Parameters:
@@ -183,11 +183,11 @@ public class NSLinks: NSModel {
 }
 
 /// Modelo que representa dados paginados.
-public class NSPagination<T: NSModel>: NSModel {
+public final class NSPagination<T: NSModel>: NSModel {
     
-    public var data: Array<T>?
-    public var meta: NSMetadata?
-    public var links: NSLinks?
+    public let data: Array<T>?
+    public let meta: NSMetadata?
+    public let links: NSLinks?
     
     /// Inicializador da classe NSPagination.
     /// - Parameters:

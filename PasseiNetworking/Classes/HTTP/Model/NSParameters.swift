@@ -12,7 +12,7 @@ import Foundation
 ///    - httpRequest: O tipo de resposta da requisição
 ///    - path: O path da requisição após a baseURL por exemplo a base url é htttp://minhautl.com.br/carros, neste caso o path seria carro
 ///    - queryString:  A queryString da requisição após o path por exemplo a base url é htttp://minhautl.com.br/carros?tipo=sedan, neste caso o path seria tipo=sedan
-public struct NSParameters {
+public struct NSParameters: @unchecked Sendable {
     
     #if os(macOS)
     public typealias Model = Codable
@@ -24,7 +24,7 @@ public struct NSParameters {
     public let httpRequest: Model?
     public let path: NSRawValue
     public var queryString: [ NSQueryString : Any ] = [:]
-    public var param: Any?
+    public let param: Any?
     
     public init(
         method: NSHTTPMethod = .GET,

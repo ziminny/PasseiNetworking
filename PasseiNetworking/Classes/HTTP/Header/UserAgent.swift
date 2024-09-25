@@ -20,6 +20,7 @@ struct UserAgent: HTTPHeaderProtocol {
     static var headerKey: HTTPHeaderConfiguration.Keys { .userAgent }
     
     /// Valor do cabeçalho User-Agent, que depende do sistema operacional.
+    
     static var headerValue: ValueType {
         
         #if os(iOS)
@@ -34,15 +35,17 @@ struct UserAgent: HTTPHeaderProtocol {
            let build = infoPlist.data.buildNumber,
            let cfNetworkVersionString = cfNetworkVersion {
             
-            // Obtém informações do dispositivo iOS
-            let modelName = UIDevice.current.model
-            let platform = UIDevice.current.systemName
-            let operationSystemVersion = ProcessInfo.processInfo.operatingSystemVersionString
-            
-            // Constrói a string do cabeçalho User-Agent
-            userAgentString = "\(appName)/\(version).\(build) " +
-                "(\(platform); \(modelName); \(operationSystemVersion)) " +
-                "CFNetwork/\(cfNetworkVersionString)"
+            DispatchQueue.main.sync {
+                // Obtém informações do dispositivo iOS
+                let modelName = UIDevice.current.model
+                let platform = UIDevice.current.systemName
+                let operationSystemVersion = ProcessInfo.processInfo.operatingSystemVersionString
+                
+                // Constrói a string do cabeçalho User-Agent
+                userAgentString = "\(appName)/\(version).\(build) " +
+                    "(\(platform); \(modelName); \(operationSystemVersion)) " +
+                    "CFNetwork/\(cfNetworkVersionString)"
+            }
         }
         
         return userAgentString

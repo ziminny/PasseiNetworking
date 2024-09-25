@@ -9,7 +9,7 @@ import Foundation
 import Network
 
 /// Protocolo utilizado para comunicar que a conexão está sendo aguardada pela `NSAPIService`.
-protocol NSURLSessionConnectivity: AnyObject {
+protocol NSURLSessionConnectivity: AnyObject where Self: Sendable {
     /// Configuração de sessão URL para a conexão.
     var configurationSession: URLSessionConfiguration { get }
     
@@ -24,19 +24,21 @@ extension NSURLSessionConnectivity {
 }
 
 /// Classe que lida com a sessão URL para a NSAPI.
-internal class NSAPIURLSession: NSObject {
+internal final class NSAPIURLSession: NSObject, Sendable {
     
-    internal static var shared = NSAPIURLSession()
+    internal static let shared = NSAPIURLSession()
     
     /// Delegado para comunicação de conectividade.
-    internal weak var delegate: NSURLSessionConnectivity?
+    internal nonisolated(unsafe) weak var delegate: NSURLSessionConnectivity?
 
     /// Sessão URL utilizada para as solicitações da NSAPI.
     internal var session: URLSession {
-        return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
+        privateQueue.sync(flags: .barrier) {
+            return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
+        }
     }
     
-    internal var privateQueue = DispatchQueue(label: "com.passeiNetworking.NSURLSessionConnectivity")
+    internal nonisolated let privateQueue = DispatchQueue(label: "com.passeiNetworking.NSURLSessionConnectivity", qos: .background)
     
     override private init() {
         super.init()
@@ -48,12 +50,13 @@ extension NSAPIURLSession: URLSessionTaskDelegate, URLSessionDelegate  {
     
     /// Função chamada quando uma tarefa está esperando por conectividade.
     public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        delegate?.checkWaitingForConnectivity(withURL: task.response?.url) 
-        // Cancela a tarefa se não estiver em segundo plano
-        
-        print("Vagner Configuration \(delegate?.configurationSession)")
-        if let configuration = delegate?.configurationSession, configuration == .noBackgroundTask {
-            task.cancel()
+        privateQueue.async {
+            self.delegate?.checkWaitingForConnectivity(withURL: task.response?.url)
+            // Cancela a tarefa se não estiver em segundo plano
+            
+            if let configuration = self.delegate?.configurationSession, configuration == .noBackgroundTask {
+                task.cancel()
+            }
         }
     }
     

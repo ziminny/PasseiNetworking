@@ -7,9 +7,9 @@
 
 import Foundation
 
-class NSTranslate {
+struct NSTranslate: Sendable {
     
-    static var shared = NSTranslate()
+    static let shared = NSTranslate()
     
     private func fabricate(translateMessage: NSTranslateMessages) -> String {
         let language = NSAPIConfiguration.shared.language

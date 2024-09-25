@@ -8,7 +8,7 @@
 import Network
 
 /// Classe para monitorar o status da conexão de rede.
-public class NSNetworkStatus: ObservableObject {
+public final class NSNetworkStatus: ObservableObject, @unchecked Sendable {
 
     /// Publicado quando o status de conexão é alterado.
     @Published public var isConnected = true
@@ -21,14 +21,15 @@ public class NSNetworkStatus: ObservableObject {
            
         let semaphore = DispatchSemaphore(value: 0)
 
-        monitor.pathUpdateHandler = { path in
+        monitor.pathUpdateHandler = { [weak self] path in
+            
             if path.status == .satisfied {
-                DispatchQueue.main.async {
-                    self.isConnected = true
+                Task { @MainActor in
+                    self?.isConnected = true
                 }
             } else {
-                DispatchQueue.main.async {
-                    self.isConnected = false
+                Task { @MainActor in
+                    self?.isConnected = false
                 }
             }
 

@@ -20,7 +20,7 @@ public class NSEmptyModel: NSModel {
 }
 #else
 /// Modelo vazio que herda de NSModel.
-public class NSEmptyModel: NSModel {
+public final class NSEmptyModel: NSModel {
     // Implementação do modelo vazio. Pode ser estendido conforme necessário por padrao vem {}.
 }
 #endif

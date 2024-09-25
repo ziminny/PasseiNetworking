@@ -11,7 +11,7 @@ import Network
 import Combine
 
 /// Um protocolo que define as propriedades e métodos necessários para a configuração e manipulação de serviços de API.
-public protocol NSAPIServiceDelegate: AnyObject {
+public protocol NSAPIServiceDelegate: AnyObject where Self: Sendable {
     
     /// A configuração de sessão URLSession a ser usada para os serviços de API.
     var configurationSession: URLSessionConfiguration { get }
@@ -23,38 +23,58 @@ public protocol NSAPIServiceDelegate: AnyObject {
 
 /// Essa classe é exposta para o cliente
 @available(iOS 13.0.0, *)
-public class NSAPIService {
+public final class NSAPIService: Sendable {
     
     /// Os parâmetros de uma solicitação de API.
-    private var nsParameters: NSParameters?
-
+    private nonisolated(unsafe) var nsParameters: NSParameters?
+    
+    private nonisolated let privateNSParametersInterceptorQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIService.NSParameters", attributes: .concurrent)
+    private nonisolated let privateInterceptorQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIService.interceptor", attributes: .concurrent)
+    private nonisolated let privateAuthorizationQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIService.authorization", attributes: .concurrent)
+    private nonisolated let privateBaseURLInterceptorQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIService.baseURLInterceptor", attributes: .concurrent)
+    private nonisolated let privateDelegateQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIService.baseURLInterceptor", attributes: .concurrent)
+    
     /// O objeto responsável por realizar as solicitações de API.
     private let apiRequester: NSAPIRequester
     
     /// Ao criar no módulo solicitado um NSAPIService, caso queira verificar a disponibilidade da internet, entregar a responsabilidade desse delegate
-    public weak var delegate: NSAPIServiceDelegate?
+    private nonisolated(unsafe) weak var delegate: NSAPIServiceDelegate?
+    
+    public func setDeletage(delegate: NSAPIServiceDelegate) {
+        privateDelegateQueue.async {
+            self.delegate = delegate
+        }
+    }
     
     internal init(apiRequester: NSAPIRequester) {
         self.apiRequester = apiRequester
-        apiRequester.delegate = self
+        apiRequester.delegateQueue.sync {
+            apiRequester.delegate = self
+        }
     }
     
     @discardableResult
-    public func interceptor(_ interceptor:NSRequestInterceptor) -> Self {
-        apiRequester.interceptor = interceptor
-        return self
+    public func interceptor(_ interceptor: NSRequestInterceptor) -> Self {
+        privateAuthorizationQueue.sync(flags: .barrier) {
+            apiRequester.interceptor = interceptor
+            return self
+        }
     }
     
     @discardableResult
-    public func authorization(_ authorization:NSAuthorization) -> Self {
-        apiRequester.authorization = authorization
-        return self
+    public func authorization(_ authorization: NSAuthorization) -> Self {
+        privateInterceptorQueue.sync(flags: .barrier) {
+            apiRequester.authorization = authorization
+            return self
+        }
     }
     
     @discardableResult
-    public func customURL(_ nsCustomBaseURLInterceptor:NSCustomBaseURLInterceptor) -> Self {
-        apiRequester.baseURLInterceptor = nsCustomBaseURLInterceptor
-        return self
+    public func customURL(_ nsCustomBaseURLInterceptor: NSCustomBaseURLInterceptor) -> Self {
+        privateBaseURLInterceptorQueue.sync(flags: .barrier) {
+            apiRequester.baseURLInterceptor = nsCustomBaseURLInterceptor
+            return self
+        }
     }
     
     /// Requisição de forma assincrona
@@ -76,23 +96,24 @@ public class NSAPIService {
     ///
     ///     }
     ///     ```
-    public func fetchAsync<T: NSModel>(_ httpResponse:T.Type, nsParameters:NSParameters) async throws -> T? {
+    public func fetchAsync<T: NSModel>(_ httpResponse:T.Type, nsParameters: NSParameters) async throws -> T? {
         
-        try self.breakRequestIfNotBakgroundTask()
+        try await self.breakRequestIfNotBakgroundTask()
         
         return try await apiRequester.fetch(
-                witHTTPResponse: httpResponse,
-                andNSParameters: nsParameters
-            )
+            witHTTPResponse: httpResponse,
+            andNSParameters: nsParameters
+        )
     }
     
+#if swift(<5.1)
     public func publisher<T: NSModel>(_ httpResponse: T.Type, nsParameters: NSParameters) -> Future<T?,Error> {
         
         return Future<T?,Error> { promise in
             Task {
                 do {
                     
-                    try self.breakRequestIfNotBakgroundTask()
+                    try await self.breakRequestIfNotBakgroundTask()
                     
                     let model = try await self.apiRequester.fetch(
                         witHTTPResponse: httpResponse,
@@ -106,14 +127,17 @@ public class NSAPIService {
             }
         }
     }
+#endif
     
     @discardableResult
     public func setNSParamns(withParameters nsParameters: NSParameters) -> Self {
-        self.nsParameters = nsParameters
-        return self
+        privateNSParametersInterceptorQueue.sync(flags: .barrier) {
+            self.nsParameters = nsParameters
+            return self
+        }
     }
     
-
+    
     /// Requisição com closure
     /// - Exemplo:
     ///     ```
@@ -133,38 +157,40 @@ public class NSAPIService {
     ///      }
     ///     ```
     @discardableResult
-    public func fetch<T: NSModel>(_ httpResponse: T.Type,closure: @escaping (Result<T,Error>) -> Void ) -> Task<Void, Error> {
+    public func fetch<T: NSModel>(_ httpResponse: T.Type, closure: @Sendable @escaping (Result<T,Error>) -> Void ) -> Task<Void, Error> {
         
-          Task {
-        
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 
-                try self.breakRequestIfNotBakgroundTask()
+                try await self.breakRequestIfNotBakgroundTask()
                 
                 guard let nsParameters = nsParameters else {
                     throw NSAPIError.unknownError()
                 }
                 
                 let response = try await apiRequester.fetch(
-                        witHTTPResponse: httpResponse,
-                        andNSParameters: nsParameters
-                    )
+                    witHTTPResponse: httpResponse,
+                    andNSParameters: nsParameters
+                )
                 closure(.success(response))
             } catch {
-                LogManager.dispachLog("error: \(#function) \(error.localizedDescription)")
+                PLMLogger.logIt("error: \(#function) \(error.localizedDescription)")
                 closure(.failure(error))
             }
-          
+            
         }
     }
     
-    private func breakRequestIfNotBakgroundTask() throws{
-        if delegate?.configurationSession == nil || delegate?.configurationSession == .noBackgroundTask {
-            let service = NSNetworkStatus(queue: .global())
-            if !service.isConnected {
-                throw NSAPIError.noInternetConnection
+    
+    private func breakRequestIfNotBakgroundTask() async throws {
+        try privateDelegateQueue.sync(flags: .barrier) {
+            if self.delegate?.configurationSession == nil || self.delegate?.configurationSession == .noBackgroundTask {
+                let service = NSNetworkStatus(queue: .global())
+                if !service.isConnected {
+                    throw NSAPIError.noInternetConnection
+                }
             }
- 
         }
     }
     
@@ -183,11 +209,4 @@ extension NSAPIService: NSAPIConfigurationSessionDelegate {
         delegate?.configurationSession ?? .noBackgroundTask
     }
 }
-
- 
-
-
-
-
-
 

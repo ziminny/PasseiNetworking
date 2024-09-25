@@ -6,6 +6,6 @@
 
 import Foundation
 
-public protocol NSRawValue {
-    var rawValue:String { get }
+public protocol NSRawValue where Self: Sendable {
+    var rawValue: String { get }
 }

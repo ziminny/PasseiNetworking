@@ -36,7 +36,7 @@ final internal class NSMakeRequest {
     /// - Parameter message: A mensagem de erro.
     /// - Returns: Um erro `NSAPIError` contendo a mensagem fornecida.
     private func dispachError(_ message: String) -> NSAPIError {
-        LogManager.dispachLog(message)
+        PLMLogger.logIt(message)
         return NSAPIError.info(message)
     }
     

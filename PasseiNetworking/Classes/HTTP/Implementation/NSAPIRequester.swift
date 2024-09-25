@@ -11,31 +11,39 @@ import PasseiLogManager
 extension NSAPIRequester: NSURLSessionConnectivity  {
     
     var configurationSession: URLSessionConfiguration {
-        return delegate?.configurationSession ?? .noBackgroundTask
+        delegateQueue.sync(flags: .barrier) {
+            return delegate?.configurationSession ?? .noBackgroundTask
+        }
     }
     
     func checkWaitingForConnectivity(withURL url: URL?) {
-        delegate?.checkWaitingForConnectivity(withURL: url)
+        delegateQueue.async {
+            self.delegate?.checkWaitingForConnectivity(withURL: url)
+        }
     }
     
 }
 
 /// Responsável por fazer as requisições na API
 @available(iOS 13.0.0, *)
-final internal class NSAPIRequester {
+internal final class NSAPIRequester: Sendable {
     
-    internal weak var delegate: NSAPIConfigurationSessionDelegate?
+    internal nonisolated let delegateQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIRequester", attributes: .concurrent)
     
-    private var isCancelableRequestGetRefreshToken: Bool = false
+    private nonisolated let privateisCancelableLock = NSLock()
+    
+    internal nonisolated(unsafe) weak var delegate: NSAPIConfigurationSessionDelegate?
+    
+    private nonisolated(unsafe) var isCancelableRequestGetRefreshToken: Bool = false
 
     /// Interceptor para modificar as requisições.
-    internal var interceptor: NSRequestInterceptor?
+    internal nonisolated(unsafe) var interceptor: NSRequestInterceptor?
 
     /// Autorização para as requisições à API.
-    internal var authorization: NSAuthorization?
+    internal nonisolated(unsafe) var authorization: NSAuthorization?
 
     /// Interceptor para modificar a URL base das requisições.
-    internal var baseURLInterceptor: NSCustomBaseURLInterceptor?
+    internal nonisolated(unsafe) var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
     
     private var makeRequest: NSMakeRequest {
@@ -67,7 +75,7 @@ final internal class NSAPIRequester {
     /// - Parameter message: A mensagem de erro.
     /// - Returns: Um erro `NSAPIError` contendo a mensagem fornecida.
     private func dispachError(_ message: String) -> NSAPIError {
-        LogManager.dispachLog(message)
+        PLMLogger.logIt(message)
         return NSAPIError.info(message)
     }
 
@@ -194,7 +202,7 @@ final internal class NSAPIRequester {
         // Imprime o código de status para debug
         debugPrint("STATUS CODE ERROR", response.statusCode)
         // Registra o erro no log
-        LogManager.dispachLog("Erro em \(#function), código de status \(response.statusCode)")
+        PLMLogger.logIt("Erro em \(#function), código de status \(response.statusCode)")
         
         // Decodifica os dados da resposta em um objeto NSAcknowledgedByAPI
         let jsonDecoder = JSONDecoder()

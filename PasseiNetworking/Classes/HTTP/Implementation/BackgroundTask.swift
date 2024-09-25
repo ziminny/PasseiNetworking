@@ -9,11 +9,14 @@
 
 import Foundation
 
+
 public extension URLSessionConfiguration {
     /// Tarefas demoradas em segundo plano (Não pode usar dados moveis)
     static var timeConsumingBackgroundTasksNo3GAccess: URLSessionConfiguration {
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        Task { @HTTPHeaderActor in
+            configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        }
         configuration.waitsForConnectivity = true
         configuration.timeoutIntervalForRequest = 3600 // 1 hora
         configuration.timeoutIntervalForResource = 60 * 60 * 3 // 3 Hora
@@ -31,7 +34,9 @@ public extension URLSessionConfiguration {
     /// Tarefas demoradas em segundo plano (Pode usar dados moveis)
     static var timeConsumingBackgroundTasks: URLSessionConfiguration {
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        Task { @HTTPHeaderActor in
+            configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        }
         configuration.waitsForConnectivity = true
         configuration.timeoutIntervalForRequest = 3600 // 1 hora
         configuration.timeoutIntervalForResource = 60 * 60 * 3 // 3 Hora
@@ -49,7 +54,9 @@ public extension URLSessionConfiguration {
     /// Tarefas medias em segundo plano (Pode usar dados moveis)
     static var averangeBackgroundTasks: URLSessionConfiguration {
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        Task { @HTTPHeaderActor in
+            configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        }
         configuration.waitsForConnectivity = true
         configuration.timeoutIntervalForRequest = 1800  // 30 Minutos
         configuration.timeoutIntervalForResource = 60 * 60// 1 Hora
@@ -68,7 +75,9 @@ public extension URLSessionConfiguration {
     static var lightBackgroundTasks: URLSessionConfiguration {
         
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        Task { @HTTPHeaderActor in
+            configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        }
         configuration.waitsForConnectivity = true
         configuration.timeoutIntervalForRequest = 900 // 15 minutos
         configuration.timeoutIntervalForResource = 60 * 60 / 3 // meia Hora
@@ -88,7 +97,9 @@ public extension URLSessionConfiguration {
     static var noBackgroundTask: URLSessionConfiguration {
         
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        Task { @HTTPHeaderActor in
+            configuration.httpAdditionalHeaders = HTTPHeader.headerDict
+        }
         // Não vai esperar, caso de erro ja lança para o usuário
         configuration.waitsForConnectivity = true
         // Pode usar 3G

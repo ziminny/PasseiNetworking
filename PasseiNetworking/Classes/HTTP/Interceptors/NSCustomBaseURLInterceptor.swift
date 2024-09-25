@@ -8,7 +8,7 @@
 import Foundation
 
 /// Protocolo utilizado para interceptar e personalizar a base URL na NSAPI.
-public protocol NSCustomBaseURLInterceptor: AnyObject {
+public protocol NSCustomBaseURLInterceptor: AnyObject where Self: Sendable {
     
     /// A base URL a ser utilizada nas requisições.
     var baseURL: String { get set }

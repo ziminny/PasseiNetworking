@@ -11,13 +11,13 @@ import PasseiLogManager
 ///  - Atributos
 ///    - statusCode: Código de erro da requisição
 ///    - message: A mensagem do erro
-public struct NSAcknowledgedByAPI:Codable {
+public struct NSAcknowledgedByAPI: Codable, Sendable {
     public private(set) var statusCode: Int
     public private(set) var message: String
 }
 
 /// Enumeração que representa os possíveis erros relacionados à API.
-public enum NSAPIError: LocalizedError {
+public enum NSAPIError: LocalizedError, Sendable {
     /// Erro desconhecido.
     case unknownError(String? = nil)
     
@@ -54,10 +54,10 @@ public extension NSAPIError {
     static func otherError(withError error: Error) -> NSAPIError {
         if let error = error as NSError? {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-                LogManager.dispachLog("Erro de comunicação com a API \(Self.self) \(#function)")
+                PLMLogger.logIt("Erro de comunicação com a API \(Self.self) \(#function)")
                 return .noInternetConnection
             }
-            LogManager.dispachLog("Erro desconhecido, tente novamente mais tarde \(Self.self) \(#function)")
+            PLMLogger.logIt("Erro desconhecido, tente novamente mais tarde \(Self.self) \(#function)")
             return .unknownError(error.localizedDescription)
         }
     }
