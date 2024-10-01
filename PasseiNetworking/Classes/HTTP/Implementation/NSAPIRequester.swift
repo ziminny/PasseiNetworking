@@ -25,7 +25,6 @@ extension NSAPIRequester: NSURLSessionConnectivity  {
 }
 
 /// Responsável por fazer as requisições na API
-@available(iOS 13.0.0, *)
 internal final class NSAPIRequester: Sendable {
     
     internal nonisolated let delegateQueue = DispatchQueue(label: "com.passeiNetworking.NSAPIRequester", attributes: .concurrent)

@@ -22,7 +22,6 @@ public protocol NSAPIServiceDelegate: AnyObject where Self: Sendable {
 }
 
 /// Essa classe é exposta para o cliente
-@available(iOS 13.0.0, *)
 public final class NSAPIService: Sendable {
     
     /// Os parâmetros de uma solicitação de API.

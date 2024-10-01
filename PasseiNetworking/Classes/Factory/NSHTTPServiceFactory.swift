@@ -8,7 +8,7 @@
 import Foundation
 
 /// Implementação padrão da fábrica de serviços HTTP.
-public final class NSHTTPServiceFactory: Sendable {
+public struct NSHTTPServiceFactory: Sendable {
     
     public init() {}
     

@@ -8,7 +8,6 @@
 import Foundation
 
 /// Estrutura que representa os cabeçalhos HTTP utilizados em requisições.
-@HTTPHeaderActor
 internal struct HTTPHeader: Decodable {
     
     /// Dicionário que contém os cabeçalhos HTTP padrão.
@@ -32,9 +31,5 @@ internal struct HTTPHeader: Decodable {
         // Retorna o dicionário completo de cabeçalhos.
         return header
     }()
-}
-
-@globalActor actor HTTPHeaderActor {
-    static var shared: some Actor = HTTPHeaderActor()
 }
 

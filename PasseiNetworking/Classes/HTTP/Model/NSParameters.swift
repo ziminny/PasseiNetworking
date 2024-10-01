@@ -14,16 +14,12 @@ import Foundation
 ///    - queryString:  A queryString da requisição após o path por exemplo a base url é htttp://minhautl.com.br/carros?tipo=sedan, neste caso o path seria tipo=sedan
 public struct NSParameters: @unchecked Sendable {
     
-    #if os(macOS)
-    public typealias Model = Codable
-    #else
     public typealias Model = NSModel
-    #endif
-    
-    public var method: NSHTTPMethod = .GET
+
+    public let method: NSHTTPMethod
     public let httpRequest: Model?
     public let path: NSRawValue
-    public var queryString: [ NSQueryString : Any ] = [:]
+    public let queryString: [ NSQueryString : Any ]
     public let param: Any?
     
     public init(

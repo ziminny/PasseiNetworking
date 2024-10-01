@@ -8,7 +8,6 @@
 import Foundation
 
 /// Atutorização da API
-@available(iOS 13.0.0, *)
 public protocol NSAuthorization: AnyObject where Self: Sendable {
     
     /// Busca pelo refresh token e injeta da requisição

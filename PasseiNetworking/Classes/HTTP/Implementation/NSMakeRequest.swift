@@ -119,15 +119,17 @@ final internal class NSMakeRequest {
         
         // Configura o método HTTP da solicitação
         urlRequest.httpMethod = nsParameters.method.rawValue
-        
+       
         // Configura o corpo da solicitação para métodos diferentes de GET
         if nsParameters.method != .GET {
             if let httpRequest = nsParameters.httpRequest {
                 let encoder = JSONEncoder()
-                let data = try encoder.encode(httpRequest)
+                let data = try encoder.encode(httpRequest)                
                 urlRequest.httpBody = data
             }
         }
+        
+        urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         
         return urlRequest
     }
