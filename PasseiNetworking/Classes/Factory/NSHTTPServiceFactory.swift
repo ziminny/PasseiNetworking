@@ -1,5 +1,5 @@
 //
-//  NSAPIFactory.swift
+//  NSHTTPServiceFactory.swift
 //  PasseiNetworking
 //
 //  Created by Vagner Oliveira on 13/11/23.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// Implementação padrão da fábrica de serviços HTTP.
-public class NSHTTPServiceFactory {
+public final class NSHTTPServiceFactory: Sendable {
     
     public init() {}
     
