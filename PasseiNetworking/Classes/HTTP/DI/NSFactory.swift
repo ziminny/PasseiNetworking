@@ -12,9 +12,14 @@ public struct NSFactory<Service: NSServiceProtocol> {
     
     private var service: Service?
     private var instanceType: NSInstanceType
+    private let factory: any NSHTTPServiceFactoryProtocol
     
-    public init(instanceType: NSInstanceType = .Singleton) {
+    public init(
+        instanceType: NSInstanceType = .Singleton,
+        factory: any NSHTTPServiceFactoryProtocol = NSHTTPServiceFactory()
+    ) {
         self.instanceType = instanceType
+        self.factory = factory
     }
     
     public var wrappedValue: Service {
@@ -22,11 +27,11 @@ public struct NSFactory<Service: NSServiceProtocol> {
         mutating get {
             
             if instanceType == .NewInstance {
-                service = Service(withFactory: Factory.instance)
+                service = Service(withFactory: factory)
                 return service!
             }
             
-            let retainInstance = RetainInstance<Service>()
+            let retainInstance = RetainInstance<Service>(factory: factory)
             let contain = retainInstance(contains: Service.self)
           
             if contain == nil {
@@ -48,6 +53,12 @@ public struct NSFactory<Service: NSServiceProtocol> {
 
 @dynamicCallable
 fileprivate struct RetainInstance<Service: NSServiceProtocol> {
+    
+    private let factory: any NSHTTPServiceFactoryProtocol
+    
+    init(factory: any NSHTTPServiceFactoryProtocol) {
+        self.factory = factory
+    }
         
     func dynamicallyCall(withKeywordArguments args: KeyValuePairs<String, Service.Type>) -> Service? {
         
@@ -56,7 +67,7 @@ fileprivate struct RetainInstance<Service: NSServiceProtocol> {
                 return StorageInstence.shared.get(ofType: Service.self)
             }
             if key == "append" {
-                let service = Service(withFactory: Factory.instance)
+                let service = Service(withFactory: factory)
                 StorageInstence.shared.append(service)
                 return service
             }
@@ -86,8 +97,4 @@ fileprivate final class StorageInstence: Sendable {
             return StorageInstence.instances.first { $0 is Service } as? Service
         }
     }
-}
-
-fileprivate struct Factory: Sendable {
-    nonisolated(unsafe) static var instance = NSHTTPServiceFactory()
 }

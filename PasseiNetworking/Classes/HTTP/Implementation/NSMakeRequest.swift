@@ -22,14 +22,15 @@ final internal class NSMakeRequest {
     /// Chave de API para autenticação (pode ser nula).
     private var apiKey: String? { configuration.apiKey }
     
-    internal var apiURLSession: NSAPIURLSession
+    internal var apiURLSession: NSAPIURLSessionProtocol
     
     internal weak var interceptor: NSRequestInterceptor?
     
     internal weak var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
-    init(apiURLSession: NSAPIURLSession) {
+    init(apiURLSession: NSAPIURLSessionProtocol) {
        self.apiURLSession = apiURLSession
+        
     }
     
     /// Gera um erro `NSAPIError` com uma mensagem e a registra no log.
@@ -49,7 +50,6 @@ final internal class NSMakeRequest {
         guard let url = URL(string: completeURL(with: path)) else {
             throw dispachError("Erro em \(#function): falha ao fazer parse da URL.")
         }
-        
         return url
     }
     
@@ -141,9 +141,15 @@ final internal class NSMakeRequest {
     internal func make(nsParameters: NSParameters) async throws -> (Data, URLResponse) {
         
         let urlRequest = try await makeURLRequest(nsParameters: nsParameters)
-        
-        // Envia a solicitação e aguarda os dados da resposta
         return try await apiURLSession.session.data(for: urlRequest)
+        
+    }
+    
+    internal func makeDownloadP12Certificate(nsParameters: NSParameters) async throws -> (URL, URLResponse) {
+        
+        let urlRequest = try await makeURLRequest(nsParameters: nsParameters)
+        return try await apiURLSession.session.download(for: urlRequest)
+        
     }
     
     deinit {

@@ -57,7 +57,7 @@ public extension NSAPIError {
                 PLMLogger.logIt("Erro de comunicação com a API \(Self.self) \(#function)")
                 return .noInternetConnection
             }
-            PLMLogger.logIt("Erro desconhecido, tente novamente mais tarde \(Self.self) \(#function)")
+            PLMLogger.logIt("Erro desconhecido, tente novamente mais tarde \(Self.self) \(#function) \(error)")
             return .unknownError(error.localizedDescription)
         }
     }

@@ -14,5 +14,12 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '13.0'
   s.source_files          = 'PasseiNetworking/Classes/**/*' 
   s.dependency 'PasseiLogManager'
+  s.dependency 'PasseiSecurity'
   s.dependency 'Socket.IO-Client-Swift'
+
+  s.test_spec 'Tests' do |test_spec|
+    test_spec.source_files = 'PasseiNetworking/Tests/**/*.{swift,h,m}'
+    test_spec.framework = 'XCTest'
+  end
+
   end

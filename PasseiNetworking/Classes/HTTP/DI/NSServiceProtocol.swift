@@ -8,6 +8,6 @@
 import Foundation
 
 public protocol NSServiceProtocol where Self: Sendable {
-    var factory: NSHTTPServiceFactory { get }
-    init(withFactory factory: NSHTTPServiceFactory)
+    var factory: NSHTTPServiceFactoryProtocol { get }
+    init(withFactory factory: NSHTTPServiceFactoryProtocol)
 }

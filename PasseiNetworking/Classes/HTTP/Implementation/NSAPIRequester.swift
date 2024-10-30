@@ -8,22 +8,6 @@
 import Foundation
 import PasseiLogManager
 
-extension NSAPIRequester: NSURLSessionConnectivity  {
-    
-    var configurationSession: URLSessionConfiguration {
-        delegateQueue.sync(flags: .barrier) {
-            return delegate?.configurationSession ?? .noBackgroundTask
-        }
-    }
-    
-    func checkWaitingForConnectivity(withURL url: URL?) {
-        delegateQueue.async {
-            self.delegate?.checkWaitingForConnectivity(withURL: url)
-        }
-    }
-    
-}
-
 /// Responsável por fazer as requisições na API
 internal final class NSAPIRequester: Sendable {
     
@@ -44,10 +28,13 @@ internal final class NSAPIRequester: Sendable {
     /// Interceptor para modificar a URL base das requisições.
     internal nonisolated(unsafe) var baseURLInterceptor: NSCustomBaseURLInterceptor?
     
+    internal let apiURLSession: NSAPIURLSessionProtocol
     
     private var makeRequest: NSMakeRequest {
         
-        let request = NSMakeRequest(apiURLSession: .shared)
+        let request = NSMakeRequest(
+            apiURLSession: apiURLSession
+        )
         
         return request.apiURLSession.privateQueue.sync {
             request.interceptor = interceptor
@@ -56,6 +43,10 @@ internal final class NSAPIRequester: Sendable {
             return request
         }
         
+    }
+    
+    init(apiURLSession: NSAPIURLSessionProtocol) {
+        self.apiURLSession = apiURLSession
     }
     
     /// Converte uma resposta `URLResponse` para um objeto `HTTPURLResponse`. Lança um erro se a conversão falhar.
@@ -92,6 +83,26 @@ internal final class NSAPIRequester: Sendable {
         return try await self.send(witHTTPResponse: httpResponse, nsParameters: nsParameters)
     }
     
+    internal func downloadP12CertificateIfNeeded(
+        nsParameters: NSParameters
+    ) async throws -> URL  {
+        
+            // Tenta realizar a solicitação usando os parâmetros fornecidos
+            let (url, urlResponse) = try await self.makeRequest.makeDownloadP12Certificate(nsParameters: nsParameters)
+            
+            // Obtém a resposta convertida para `HTTPURLResponse`
+            let response = try self.response(with: urlResponse)
+            
+            // Resposta de sucesso (códigos 2xx)
+            if NSHTTPStatusCodes.successRange ~= response.statusCode {
+                return url
+            }
+            
+            throw NSAPIError.acknowledgedByAPI(.init(statusCode: response.statusCode , message: "Erro desconhecido"))
+         
+        
+    }
+    
     /// Envia uma solicitação assíncrona para o servidor e trata a resposta de acordo com o modelo de resposta esperado.
     /// - Parameters:
     ///   - httpResponse: O tipo de resposta esperado que será usado para decodificar os dados.
@@ -105,22 +116,23 @@ internal final class NSAPIRequester: Sendable {
         
         // Tenta realizar a solicitação usando os parâmetros fornecidos
         let (data, urlResponse) = try await self.makeRequest.make(nsParameters: nsParameters)
-        
+                
         // Obtém a resposta convertida para `HTTPURLResponse`
         let response = try self.response(with: urlResponse)
         
         // Resposta de sucesso (códigos 2xx)
-        if 200..<299 ~= response.statusCode {
+        if NSHTTPStatusCodes.successRange ~= response.statusCode {
             let jsonDecoder = JSONDecoder()
             let result = try jsonDecoder.decode(T.self, from: data)
             return result
         }
         
         // Token de acesso expirado (código 401)
-        if response.statusCode == 401 {
+        if response.statusCode == NSHTTPStatusCodes.unauthorized {
             // Verifica se há um provedor de autorização configurado
             guard let authorization = authorization else {
-                throw self.dispachError("Erro em \(#function): provedor de autorização não implementado.")
+                PLMLogger.logIt("Erro em \(#function): provedor de autorização não implementado.")
+                throw self.dispachError("Provedor de autorização não implementado.")
             }
             
             // Verifica se a solicitação de atualização do token pode ser cancelada
@@ -138,8 +150,9 @@ internal final class NSAPIRequester: Sendable {
         }
         
         // Erro interno do servidor (código 500)
-        if response.statusCode == 500 {
-            throw dispachError("Erro no servidor em \(#function), código de status \(response.statusCode)")
+        if response.statusCode == NSHTTPStatusCodes.internalServerError {
+            PLMLogger.logIt("Erro no servidor em \(#function), código de status \(response.statusCode)")
+            throw dispachError("Erro interno no servidor")
         }
         
         // Trata outros erros provenientes da API
@@ -172,7 +185,7 @@ internal final class NSAPIRequester: Sendable {
         let response = try self.response(with: urlResponse)
         
         // Se a resposta for bem-sucedida (código 200 ou 201)
-        if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode == NSHTTPStatusCodes.ok || response.statusCode == NSHTTPStatusCodes.created) {
             // Salva os dados do novo token de acesso
             self.authorization?.save(withData: data)
             // Realiza novamente a última chamada à API
@@ -180,7 +193,7 @@ internal final class NSAPIRequester: Sendable {
         }
         
         // Se o servidor retornar um erro interno (código 500)
-        if response.statusCode == 500 {
+        if response.statusCode == NSHTTPStatusCodes.internalServerError {
             throw dispachError("Erro interno do servidor em \(#function), código de status \(response.statusCode)")
         }
         
@@ -199,7 +212,6 @@ internal final class NSAPIRequester: Sendable {
     /// - Throws: Um erro se a decodificação dos dados falhar.
     private func throwsApiError(response: HTTPURLResponse, data: Data) throws -> NSAcknowledgedByAPI {
         // Imprime o código de status para debug
-        debugPrint("STATUS CODE ERROR", response.statusCode)
         // Registra o erro no log
         PLMLogger.logIt("Erro em \(#function), código de status \(response.statusCode)")
         
@@ -211,6 +223,21 @@ internal final class NSAPIRequester: Sendable {
     deinit {
         print("N_S DEINIT \(Self.self)")
     }
-    
 
+}
+
+extension NSAPIRequester: NSURLSessionConnectivity  {
+    
+    var configurationSession: URLSessionConfiguration {
+        delegateQueue.sync(flags: .barrier) {
+            return delegate?.configurationSession ?? .noBackgroundTask
+        }
+    }
+    
+    func checkWaitingForConnectivity(withURL url: URL?) {
+        delegateQueue.async {
+            self.delegate?.checkWaitingForConnectivity(withURL: url)
+        }
+    }
+    
 }

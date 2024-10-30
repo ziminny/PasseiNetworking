@@ -7,43 +7,34 @@
 
 import Foundation
 import Network
-
-/// Protocolo utilizado para comunicar que a conexão está sendo aguardada pela `NSAPIService`.
-protocol NSURLSessionConnectivity: AnyObject where Self: Sendable {
-    /// Configuração de sessão URL para a conexão.
-    var configurationSession: URLSessionConfiguration { get }
-    
-    /// Verifica se a conexão está aguardando conectividade.
-    /// - Parameter url: URL associada à tarefa.
-    func checkWaitingForConnectivity(withURL url: URL?)
-}
-
-extension NSURLSessionConnectivity {
-    /// Configuração de sessão URL padrão quando não é uma tarefa em segundo plano.
-    var configurationSession: URLSessionConfiguration { .noBackgroundTask }
-}
+import PasseiSecurity
 
 /// Classe que lida com a sessão URL para a NSAPI.
-internal final class NSAPIURLSession: NSObject, Sendable {
+public final class NSAPIURLSession: NSObject, NSAPIURLSessionProtocol {
     
-    internal static let shared = NSAPIURLSession()
+    public static var shared: NSAPIURLSession = NSAPIURLSession()
+    
+    
+    public var certificateInterceptor: PSURLSessionLoadCertificate?
+    
+    //public static let shared = NSAPIURLSession()
     
     /// Delegado para comunicação de conectividade.
-    internal nonisolated(unsafe) weak var delegate: NSURLSessionConnectivity?
-
+    public nonisolated(unsafe) weak var delegate: NSURLSessionConnectivity?
+    
     /// Sessão URL utilizada para as solicitações da NSAPI.
-    internal var session: URLSession {
+    public var session: URLSession {
         privateQueue.sync(flags: .barrier) {
             return URLSession(configuration: delegate?.configurationSession ?? .noBackgroundTask, delegate: self, delegateQueue: nil)
         }
     }
     
-    internal nonisolated let privateQueue = DispatchQueue(label: "com.passeiNetworking.NSURLSessionConnectivity", qos: .background)
+    public nonisolated let privateQueue = DispatchQueue(label: "com.passeiNetworking.NSURLSessionConnectivity", qos: .background)
     
     override private init() {
         super.init()
-    } 
-
+    }
+    
 }
 
 extension NSAPIURLSession: URLSessionTaskDelegate, URLSessionDelegate  {
@@ -60,6 +51,40 @@ extension NSAPIURLSession: URLSessionTaskDelegate, URLSessionDelegate  {
         }
     }
     
+    public func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        
+        do {
+            
+            if let certificateInterceptor {
+                
+                try certificateInterceptor.urlSession(
+                    session,
+                    didReceive: challenge,
+                    completionHandler: completionHandler
+                )
+                
+                return
+                
+            }
+            
+            completionHandler(.performDefaultHandling, nil)
+            
+        } catch {
+            // Tratar esse erro
+            print("Erro ao mandar o challenge", error)
+            completionHandler(.performDefaultHandling, nil)
+            
+        }
+        
+    }
+    
 }
 
-
+public extension NSURLSessionConnectivity {
+    /// Configuração de sessão URL padrão quando não é uma tarefa em segundo plano.
+    var configurationSession: URLSessionConfiguration { .noBackgroundTask }
+}

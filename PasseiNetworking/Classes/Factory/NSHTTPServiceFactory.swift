@@ -7,22 +7,34 @@
 
 import Foundation
 
+public protocol NSHTTPServiceFactoryProtocol where Self: Sendable {
+    func makeHttpService(apiURLSession: NSAPIURLSessionProtocol) -> NSAPIService
+    func makeSocketService() -> NSSocketManager
+}
+
+extension NSHTTPServiceFactoryProtocol {
+    
+    public func makeHttpService(apiURLSession: NSAPIURLSessionProtocol = NSAPIURLSession.shared) -> NSAPIService {
+        
+        let apiRequester = NSAPIRequester(apiURLSession: apiURLSession)
+        let http = NSAPIService(apiRequester: apiRequester)
+        
+        return http
+        
+    }
+    
+}
+
 /// Implementação padrão da fábrica de serviços HTTP.
-public struct NSHTTPServiceFactory: Sendable {
+public struct NSHTTPServiceFactory: Sendable, NSHTTPServiceFactoryProtocol {
     
     public init() {}
-    
-    public func makeHttpService() -> NSAPIService {
-        let apiRequester = NSAPIRequester()
-        let http = NSAPIService(apiRequester: apiRequester)
-        return http
-    }
     
     public func makeSocketService() -> NSSocketManager {
         let socket = NSSocketManager.shared
         return socket
     }
- 
+    
 }
- 
+
 
