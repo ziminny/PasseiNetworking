@@ -10,54 +10,68 @@ import PasseiSecurity
 
 public struct NSMTLSKeychainConfiguration {
     
-    private var keychain: PSKeychainCertificateHandler
+    private var facade: PSKeychainFacade
     
     public init() {
-        keychain = PSKeychainCertificateHandler()
+        facade = PSKeychainFacade()
     }
     
     public mutating func setProperties(keychainLabel: String) {
-        PSKeychainProperties.shared.keychainLabel = keychainLabel
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.keychainLabel = keychainLabel
     }
     
     public mutating func setProperties(keychainLabel: String, p12CertificateURL: URL?) {
-        PSKeychainProperties.shared.keychainLabel = keychainLabel
-        PSKeychainProperties.shared.p12CertificateURL = p12CertificateURL
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.keychainLabel = keychainLabel
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.p12CertificateURL = p12CertificateURL
     }
     
     public mutating func setProperties(p12CertificateURL: URL?) {
-        PSKeychainProperties.shared.p12CertificateURL = p12CertificateURL
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.p12CertificateURL = p12CertificateURL
     }
     
     public mutating func setProperties(keychainLabel: String, p12CertificateURL: URL?, p12Password: String) {
-        PSKeychainProperties.shared.keychainLabel = keychainLabel
-        PSKeychainProperties.shared.p12CertificateURL = p12CertificateURL
-        PSKeychainProperties.shared.p12Password = p12Password
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.keychainLabel = keychainLabel
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.p12CertificateURL = p12CertificateURL
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.p12Password = p12Password
     }
     
     public mutating func setProperties(keychainLabel: String, p12Password: String) {
-        PSKeychainProperties.shared.keychainLabel = keychainLabel
-        PSKeychainProperties.shared.p12Password = p12Password
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.keychainLabel = keychainLabel
+        PSKeychainCertificateHandler.PSKeychainProperties.shared.p12Password = p12Password
     }
     
-    public func saveIdentityToKeychain() throws {
-        try keychain.saveIdentityToKeychain()
+    @discardableResult
+    public mutating func saveIdentityToKeychain() throws -> Bool {
+        try facade.saveCertificate()
     }
     
-    public func renewCertificate() throws {
-        try keychain.renewCertificate()
+    public mutating func renewCertificate() throws {
+        try facade.renewCertificate()
     }
     
-    public func removeIdentityFromKeychain() -> Bool {
-        keychain.removeIdentityFromKeychain()
+    public mutating func removeIdentityFromKeychain() -> Bool {
+        facade.removeCertificate()
     }
     
-    public func loadClientIdentity() throws -> CFTypeRef? {
-        try keychain.loadClientIdentity()
+    public mutating func loadClientIdentity() throws -> CFTypeRef? {
+        try facade.loadCertificateIdentity()
     }
     
-    public func identityExistsInKeychain() -> Bool {
-        keychain.identityExistsInKeychain()
+    public mutating func identityExistsInKeychain() -> Bool {
+        facade.identityExistsInKeychain()
+    }
+    
+    public mutating func saveGeneric<T: KeychainModel>(value: T) throws  {
+        try facade.saveGeneric(value: value)
+    }
+    
+    
+    public mutating func loadGeneric<T: KeychainModel>(ofType type: T.Type) throws -> T?  {
+        try facade.loadGeneric(value: type)
+    }
+    
+    public mutating func deleteGeneric<T: KeychainModel>(ofType type: T.Type) throws {
+        try facade.deleteGeneric(value: type)
     }
     
 }
