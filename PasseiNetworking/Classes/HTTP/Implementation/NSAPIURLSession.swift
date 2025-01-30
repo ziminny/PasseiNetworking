@@ -14,7 +14,6 @@ public final class NSAPIURLSession: NSObject, NSAPIURLSessionProtocol {
     
     public static var shared: NSAPIURLSession = NSAPIURLSession()
     
-    
     public var certificateInterceptor: PSURLSessionLoadCertificate?
     
     //public static let shared = NSAPIURLSession()

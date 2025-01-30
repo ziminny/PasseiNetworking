@@ -52,9 +52,9 @@ public final class NSAPIService: Sendable {
     
     @discardableResult
     public func certificate(keychain: PSKeychainCertificateProtocol = PSKeychainCertificateHandler()) -> Self {
-        #if DEVELOPMENT || RELEASE
+        //#if DEVELOPMENT || RELEASE
         apiRequester.apiURLSession.certificateInterceptor = PSURLSessionLoadCertificate(keychain: keychain)
-        #endif
+        //#endif
        
             return self
     }
