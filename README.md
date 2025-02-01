@@ -1,237 +1,183 @@
-# PasseiNetworking
+
+# 🌐 PasseiNetworking
 
 [![CI Status](https://img.shields.io/travis/95707007/PasseiNetworking.svg?style=flat)](https://travis-ci.org/95707007/PasseiNetworking)
 [![Version](https://img.shields.io/cocoapods/v/PasseiNetworking.svg?style=flat)](https://cocoapods.org/pods/PasseiNetworking)
 [![License](https://img.shields.io/cocoapods/l/PasseiNetworking.svg?style=flat)](https://cocoapods.org/pods/PasseiNetworking)
 [![Platform](https://img.shields.io/cocoapods/p/PasseiNetworking.svg?style=flat)](https://cocoapods.org/pods/PasseiNetworking)
 
-## 🔎 Sobre
+O **PasseiNetworking** é uma poderosa e flexível biblioteca em Swift para realizar requisições HTTP assíncronas, com suporte a configuração de headers, paths dinâmicos, interceptores e autenticação.
 
-`PasseiNetworking` é uma poderosa e flexível biblioteca em Swift para realizar requisições de API de forma assíncrona, com suporte a interceptação de requisições.
+---
 
-### 🛠️ Dependências
+## **Descrição**
 
-- **PasseiLogManager**: Requerido para logs detalhados.
-- **PasseiJWT**: (Sem documentação ainda) - Verificação de JWT.
+A biblioteca oferece uma interface prática para:
 
-## 🔧 Instalação
+- Configuração de URL base e paths personalizados.
+- Requisições assíncronas com `async/await`.
+- Interceptação e modificação de requisições (ex.: headers de autenticação).
+- Tratamento de erros centralizado.
 
-Para integrar `PasseiNetworking` ao seu projeto, adicione a seguinte linha ao seu arquivo `Podfile`:
+---
+
+## **Requisitos**
+
+- **Swift**: 5.0 ou superior
+- **iOS**: Compatível com iOS 11.0+
+- **PasseiLogManager**: Dependência para logs.
+- **PasseiJWT**: (opcional) para autenticação JWT.
+
+---
+
+## **Instalação**
+
+### **Usando CocoaPods**
+
+Adicione a seguinte linha ao seu arquivo `Podfile`:
 
 ```ruby
 pod 'PasseiNetworking'
 ```
 
-### Em seguida, execute o comando:
+Em seguida, execute o comando:
 
-```swift
+```bash
 pod install
 ```
-## ⚙️ Uso Básico
 
-Comece importando o módulo em seu código:
+---
 
-```swift
-import PasseiNetworking
-```
-### 1. Criação de uma Instância da NSAPIService
-Crie uma instância da NSAPIService:
+## **Configuração Inicial**
+
+1. **Defina a URL base e a porta do servidor:**  
+   No seu `AppDelegate`, configure o serviço:
+
+   ```swift
+   import PasseiNetworking
+
+   NSAPIConfiguration.shared.setBaseUrl("http://localhost")
+   NSAPIConfiguration.shared.setPort(3000)
+   ```
+
+2. **Configure um interceptor para headers personalizados:**  
+   Adicione um interceptor para autenticação ou outros headers.
+
+   ```swift
+   let interceptor = NSRequestInterceptor()
+   interceptor.addHeader("Authorization", value: "Bearer token")
+   apiService.interceptor(interceptor)
+   ```
+
+---
+
+## **Uso Básico**
+
+### **1. Fazendo uma Requisição GET**
 
 ```swift
 let apiService = NSAPIService()
-```
-### 2. Configuração de URL Base e Porta
-Antes de começar, defina a URL base e a porta na sua AppDelegate:
 
-```swift
-NSAPIConfiguration.shared.setBaseUrl("http://localhost")
-NSAPIConfiguration.shared.setPort(3000)
-```
-
-### 3. Configuração de Interceptor
-A NSAPIService permite a configuração de interceptadores para modificar ou adicionar informações às requisições. Por exemplo:
-
-```swift
-let interceptor = NSRequestInterceptor()
-interceptor.addHeader("Authorization", value: "Bearer token")
-apiService.interceptor(interceptor)
-```
-
-### 4. Realização de Requisições
-Depois de configurar a NSAPIService, você pode fazer requisições de forma assíncrona usando a função fetchAsync ou com uma closure usando fetch.
-
-Requisição Assíncrona:
-```swift
 let nsParameters = NSParameters(method: .GET, path: .examplePath)
+
 do {
     let response = try await apiService.fetchAsync(MyModel.self, nsParameters: nsParameters)
-    // Utilize a resposta conforme necessário
+    print("Resposta recebida:", response)
 } catch {
-    // Lidar com possíveis erros
+    print("Erro:", error)
 }
 ```
 
-Requisição com Closure
+### **2. Fazendo uma Requisição POST**
+
+```swift
+let requestData = MyRequestData(param1: "value")
+
+let nsParameters = NSParameters(
+    method: .POST,
+    path: .examplePostPath,
+    httpRequest: requestData
+)
+
+let response = try await apiService.fetchAsync(MyResponseModel.self, nsParameters: nsParameters)
+```
+
+### **3. Usando Closure para Requisição**
 
 ```swift
 apiService.fetch(MyModel.self) { result in
     switch result {
-    case .success(let myModel):
-        // Utilize 'myModel' conforme necessário
-        break
+    case .success(let data):
+        print("Dados recebidos:", data)
     case .failure(let error):
-        // Lidar com possíveis erros
-        break
+        print("Erro:", error)
     }
 }
 ```
 
-### 5. Configuração Avançada
-Interceptação de Requisições
-A NSAPIService suporta interceptadores para adicionar ou modificar informações das requisições. Exemplo:
+---
 
-```swift
-let interceptor = NSRequestInterceptor()
-interceptor.addHeader("Authorization", value: "Bearer token")
-apiService.interceptor(interceptor)
-```
-Customização da URL
-Personalize a URL base para requisições utilizando NSCustomBaseURLInterceptor:
+## **Configurações Avançadas**
+
+### **1. Personalização da URL base**
+
+Você pode personalizar a URL base utilizando o interceptor `NSCustomBaseURLInterceptor`.
 
 ```swift
 let baseURLInterceptor = NSCustomBaseURLInterceptor(baseURL: "https://api.example.com")
 apiService.customURL(baseURLInterceptor)
 ```
 
-## 🧰 Configuração Avançada
+### **2. Tratamento de Erros**
 
-### 1. Tratamento de Erros
-A NSAPIService retorna um Result com sucesso ou falha. Certifique-se de lidar com possíveis erros em suas chamadas de requisição.
+A biblioteca retorna um `Result` para indicar sucesso ou falha. Certifique-se de lidar com diferentes tipos de erro.
 
 ```swift
+switch result {
 case .failure(let error):
     if let nsError = error as? NSAPIError {
         switch nsError {
-        case .unknowError(let string):
-            break
-        case .info(let string):
-            break
-        case .acknowledgedByAPI(let nSAcknowledgedByAPI):
-            break
+        case .unknowError(let message):
+            print("Erro desconhecido:", message)
         case .noInternetConnection:
-            break
-        }
-        return
-    }
-
-NSAPIError.outherError(withError: error) { e in }
-```
-
-### 2. Paths
-Configure seus paths de maneira organizada:
-
-```swift
-import Foundation
-import PasseiNetworking
-
-/// Todos os paths dos aplicativos, caso exista mais de um
-public enum OABAPIPath {
-    case caseA(MyAppPathA)
-    case caseB(MyAppPathB)
-}
-
-/// Paths da aplicação
-public enum MyAppPathA: String {
-    case auth = "auth"
-    case resiter = "register"
-}
-
-public enum MyAppPathB: String {
-    case outher = "outher"
-}
-
-extension OABAPIPath: NSRawValue {
-    public var rawValue: String {
-        switch self {
-        case .caseA(let subcase):
-            return subcase.rawValue
-
-        case .caseB(let subcase):
-            return subcase.rawValue
+            print("Sem conexão à internet")
+        default:
+            print("Erro:", nsError)
         }
     }
 }
 ```
 
-### 3. Chamando um Request
-Exemplo mais completo utilizando uma factory:
+---
 
-```swift
-class Service {
-    
-    let factory: NSHTTPServiceFactoryProtocol
-    
-    init(withFactory factory: NSHTTPServiceFactoryProtocol) {
-        self.factory = factory
-    }
-    
-    func getCurrent() async throws -> MyResponse? {
-        
-        let response = try await factory.service
-          .interceptor(DefaultInterceptor())
-            .fetchAsync(
-                MyRequest.self,
-                nsParameters: NSParameters(
-                    method: .GET,
-                    path: MYPATH.name(.user)
-                )
-            )
-        return response
-        
-    }
-    
-    func update(request: MyRequest) async throws  {
-        
-        let _ = try await factory.service
-          .interceptor(DefaultInterceptor())
-          .authorization(DefaltAuthorization())
-            .fetchAsync(
-                NSEmptyModel.self, // Resposta sem dados. Assim -> {}
-                nsParameters: NSParameters(
-                    method: .POST,
-                    httpRequest: request,
-                    path: MYPATH.name(.outherPath)
-                )
-            )
-    }
-}
-```
+## **Contribuição**
 
-### 4. Adicionando Delegate
-Adicione um delegate para mudar algumas configurações:
+Contribuições são bem-vindas! Siga os passos abaixo para colaborar:
 
-```swift
-extension OABPasswordRecoveryService: NSAPIServiceDelegate {
-    
-    // Adicione delegate factory.service.delegate = self
-    
-    var configurationSession: URLSessionConfiguration { .timeConsumingBackgroundTasks }
-    
-    func networkUnavailableAction(withURL url: URL?) {
-         
-    }
-}
-```
+1. Faça um fork do projeto.
+2. Crie uma branch para suas alterações (`git checkout -b minha-feature`).
+3. Faça commit das alterações (`git commit -m 'Minha nova feature'`).
+4. Envie as alterações para o seu fork (`git push origin minha-feature`).
+5. Abra um Pull Request para revisão.
 
-Este pacote está funcionando, mas ainda está sendo implementado melhorias.
+---
 
-## 📝 Autores
-ziminny@gmail.com
-gabrielmors210@gmail.com
+## **Licença**
 
-## 🔒 Licença
-MIT
+PasseiNetworking está disponível sob a licença **MIT**. Consulte o arquivo `LICENSE` para mais informações.
 
+---
 
---------------------------------------------------------------------------------------------
+## **Autores**
 
+- **Vagner Oliveira**  
+  E-mail: ziminny@gmail.com
+- **Gabriel Mors**  
+  E-mail: gabrielmors210@gmail.com
+
+---
+
+## **Recursos úteis**
+
+- [Documentação CocoaPods](https://guides.cocoapods.org/)
+- [Swift.org](https://swift.org)
