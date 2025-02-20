@@ -179,7 +179,7 @@ internal final class NSAPIRequester: Sendable {
         isCancelableRequestGetRefreshToken = true
         
         // Faz a solicitação de refreshToken
-        let (data, urlResponse) = try await self.makeRequest.make(nsParameters: lastNSParameters)
+        let (data, urlResponse) = try await self.makeRequest.make(nsParameters: nsParameters)
         
         // Obtém a resposta do servidor
         let response = try self.response(with: urlResponse)
