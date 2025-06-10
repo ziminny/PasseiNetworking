@@ -14,7 +14,7 @@ public extension Notification.Name {
     }
     
     enum SocketEndpointsPasseiOAB: String, CaseIterable {
-        case createUser = "createUser"
+        case removeExpiredCompleteRoutine = "removeExpiredCompleteRoutine"
     }
     
     enum NSSocketProviderName: Hashable {
@@ -26,7 +26,7 @@ public extension Notification.Name {
         switch endpoints {
         case .passeiOAB(let item):
             switch item {
-            case .createUser:
+            case .removeExpiredCompleteRoutine:
                 return Notification.Name(item.rawValue)
             }
         case .passeiENEM(let item):
